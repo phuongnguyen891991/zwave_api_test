@@ -943,12 +943,13 @@ int main(int argc, char *argv[])
                 }
                 break;
             case CMD_SENSOR_HEAVY_DUTY_SMART_SWITCH:
-                    printf("Please provide the NodeID and SensorType: ");
+                    //printf("Please provide the NodeID and SensorType: ");
                     printf("1. sensor \t 2.meter \n");
                 int choise;
                 scanf("%d",&choise);
                 if(choise == 1)
-                {    
+                {  
+                 printf("Please provide the NodeID and SensorType: ");
                     scanf("%X %X",&NodeID,&SensorType);
 
                     if((SensorType == 0x01) | (SensorType == 0x05))
@@ -1001,7 +1002,8 @@ int main(int argc, char *argv[])
                 }
                 if(choise == 2)
                 {
-                    if(scanf("%X",&Meter_Type) == 1)
+                    printf("enter nodeID & meter typer: ");
+                    if(scanf("%X %X",&NodeID,&Meter_Type) == 2)
                     {
                         printf("you have chosen Power measurement! \n");
                         pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
@@ -1017,23 +1019,24 @@ int main(int argc, char *argv[])
                         {
                             unsigned long result_from_hex;
                             int precicsion;
-                            float delta_time;
-                            mainlog(logUI,"TEST: Node[%02X] says sensor level:%03u! ",NodeID,pzwParam->data_out.cmd[2]);
+                            int delta_time;
+                            mainlog(logUI,"TEST: Node[%02X] says sensor level:%02X! ",NodeID,pzwParam->data_out.cmd[2]);
                             printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
                                 pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
                             precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]&0x020>>5));
 
                             
-                            long  watt_mesurement;
+                            float  watt_measurement;
                             printf("kWah ! \n");
                         
-                            watt_mesurement = (uint32_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5]<< 16 ) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
+                            watt_measurement = (uint32_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5]<< 16 ) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
                             delta_time = (uint16_t)((pzwParam->data_out.cmd[8]<< 8) | pzwParam->data_out.cmd[9]);
 
-                            printf("Electric Meter (kWh) : %2.5f \n",watt_mesurement);
-                            printf("Delta time (s): %2.2lf \n", delta_time);
+                            printf("Electric Meter (W) : %2.2lf \n",watt_measurement/precicsion);
+                            printf("Delta time (s): %ld\n", delta_time);
+                            printf("Power consumption(Wh): %2.5lf \n",(watt_measurement/precicsion)*delta_time /3600 );
                             printf("BTu/h (btu/h) : %2.2lf\n",
-                                ((watt_mesurement/precicsion))*1.36);
+                                ((watt_measurement/precicsion)/1000)*1.36);
                         }
                     }
                 }
