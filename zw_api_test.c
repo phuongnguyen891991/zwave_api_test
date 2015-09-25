@@ -8,11 +8,15 @@
 #include "zw_api.h"
 #include "SerialAPI/ZW_classcmd.h"
 #include "SerialAPI/ZW_SerialAPI.h"
-
+#define manu_max 161
+#define manu_pID_max 179
+#define manu_pType_max 13
+#define manu_class_suport_max 158
 enum COMMAND_IDX {
     CMD_ADD = 0,
     CMD_RM,
     CMD_LIST,
+ //   CMD_LIST_FULL,
     CMD_TURN_ON_NODE,
     CMD_TURN_OFF_NODE,
     CMD_GET_STATUS_NODE,
@@ -47,6 +51,29 @@ enum COMMAND_IDX {
     CMD_EXIT,
     CMD_MAX
 };
+typedef struct manu_product_type{
+    uint32_t product_type_id_number;
+    char product_type_name[128];
+
+}Manu_product_type_t;
+
+typedef struct manu_product_id{
+    uint16_t product_id_number;
+    char product_id_name[128];
+
+}Manu_product_id_t;
+
+typedef struct manu_class_support{
+    uint16_t class_support_number;
+    char command_class_suport[128];
+
+}Manu_class_suport_t;
+
+typedef struct Manufacture_ID{
+    uint16_t manufacture_id_value;
+    char  manufacture[256];
+
+}Manufacture_id_value_t;
 
 typedef struct cmd_handler_s{
     enum COMMAND_IDX cmd_idx;
@@ -70,12 +97,559 @@ int cmd_rm(void* arg)
 
 }
 
+Manu_product_type_t product_type_id_t[manu_pType_max] = {
+{.product_type_name = " Z-wave Door/Windown Sensor                                                               ",.product_type_id_number = 0x01020059}, /**/
+{.product_type_name = " Z-wave Door/Windown Sensor                                                               ",.product_type_id_number = 0x0002001D},
+{.product_type_name = " Z-wave Sensor Multilevel 6                                                               ",.product_type_id_number = 0x01020064}, /**/
+{.product_type_name = " Z-wave Smart Outlet                                                                      ",.product_type_id_number = 0x49523031},/**/
+{.product_type_name = " Z-wave Heavy Duty Smart Switch                                                           ",.product_type_id_number = 0x0103004E},/**/
+{.product_type_name = " Z-wave Led                                                                               ",.product_type_id_number = 0x00040001},/**/
+{.product_type_name = " Z-wave Outlet Lamp Module                                                                ",.product_type_id_number = 0x44503030},/**/
+{.product_type_name = " Z-wave Motion Sensor (Ecolink)                                                           ",.product_type_id_number = 0x00010001},/**/
+{.product_type_name = " Z-wave Sensor Multilevel Gen5                                                            ",.product_type_id_number = 0x0102004A},/**/
+{.product_type_name = " Z-wave Siren Alarm Sensor                                                                ",.product_type_id_number = 0x01040050},/**/
+{.product_type_name = " Z-wave Aeotec Smartdimmer                                                                ",.product_type_id_number = 0x00030019},/**/
+{.product_type_name = " Z-wave Door/Windown Fibaro Systems Sensor                                                ",.product_type_id_number = 0x07002000},/**/
+{.product_type_name = " Z-wave Door/Windown Sensor (DWZ)                                                         ",.product_type_id_number = 0x00010002},/**/
+
+
+};
+
+Manu_product_id_t product_id_t[manu_pID_max]={
+
+{.product_id_name = "MFG_ID_NOT_DEFINED_OR_UNDEFINED                           ", .product_id_number =0xFFFF  }, //Not defined or un-defined
+{.product_id_name = "MFG_ID_2B_ELECTRONICS                                     ", .product_id_number =0x0028  }, //2B Electronics
+{.product_id_name = "MFG_ID_2GIG_TECHNOLOGIES_INC                              ", .product_id_number =0x009B  }, //2gig Technologies Inc.
+{.product_id_name = "MFG_ID_3E_TECHNOLOGIES                                    ", .product_id_number =0x002A  }, //3e Technologies
+{.product_id_name = "MFG_ID_A1_COMPONENTS                                      ", .product_id_number =0x0022  }, //A-1 Components
+{.product_id_name = "MFG_ID_ABILIA                                             ", .product_id_number =0x0117  }, //Abilia
+{.product_id_name = "MFG_ID_ACT_ADVANCED_CONTROL_TECHNOLOGIES                  ", .product_id_number =0x0001  }, //ACT - Advanced Control Technologies
+{.product_id_name = "MFG_ID_AEON_LABS                                          ", .product_id_number =0x0086  }, //AEON Labs
+{.product_id_name = "MFG_ID_AIRLINE_MECHANICAL_CO_LTD                          ", .product_id_number =0x0111  }, //Airline Mechanical Co., Ltd.
+{.product_id_name = "MFG_ID_ALARMCOM                                           ", .product_id_number =0x0094  }, //Alarm.com
+{.product_id_name = "MFG_ID_ASIA_HEADING                                       ", .product_id_number =0x0029  }, //Asia Heading
+{.product_id_name = "MFG_ID_ATECH                                              ", .product_id_number =0x002B  }, //Atech
+{.product_id_name = "MFG_ID_BALBOA_INSTRUMENTS                                 ", .product_id_number =0x0018  }, //Balboa Instruments
+{.product_id_name = "MFG_ID_BENEXT                                             ", .product_id_number =0x008A  }, //BeNext
+{.product_id_name = "MFG_ID_BESAFER                                            ", .product_id_number =0x002C  }, //BeSafer
+{.product_id_name = "MFG_ID_BFT_SPA                                            ", .product_id_number =0x014B  }, //BFT S.p.A.
+{.product_id_name = "MFG_ID_BOCA_DEVICES                                       ", .product_id_number =0x0023  }, //Boca Devices
+{.product_id_name = "MFG_ID_BROADBAND_ENERGY_NETWORKS_INC                      ", .product_id_number =0x002D  }, //Broadband Energy Networks Inc.
+{.product_id_name = "MFG_ID_BULOGICS                                           ", .product_id_number =0x0026  }, //BuLogics
+{.product_id_name = "MFG_ID_CAMEO_COMMUNICATIONS_INC                           ", .product_id_number =0x009C  }, //Cameo Communications Inc.
+{.product_id_name = "MFG_ID_CARRIER                                            ", .product_id_number =0x002E  }, //Carrier
+{.product_id_name = "MFG_ID_CASAWORKS                                          ", .product_id_number =0x000B  }, //CasaWorks
+{.product_id_name = "MFG_ID_CHECKIT_SOLUTIONS_INC                              ", .product_id_number =0x014E  }, //Check-It Solutions Inc.
+{.product_id_name = "MFG_ID_CHROMAGIC_TECHNOLOGIES_CORPORATION                 ", .product_id_number =0x0116  }, //Chromagic Technologies Corporation
+{.product_id_name = "MFG_ID_COLOR_KINETICS_INCORPORATED                        ", .product_id_number =0x002F  }, //Color Kinetics Incorporated
+{.product_id_name = "MFG_ID_COMPUTIME                                          ", .product_id_number =0x0140  }, //Computime
+{.product_id_name = "MFG_ID_CONNECTED_OBJECT                                   ", .product_id_number =0x011B  }, //Connected Object
+{.product_id_name = "MFG_ID_CONTROLTHINK_LC                                    ", .product_id_number =0x0019  }, //ControlThink LC
+{.product_id_name = "MFG_ID_CONVERGEX_LTD                                      ", .product_id_number =0x000F  }, //ConvergeX Ltd.
+{.product_id_name = "MFG_ID_COOPER_LIGHTING                                    ", .product_id_number =0x0079  }, //Cooper Lighting
+{.product_id_name = "MFG_ID_COOPER_WIRING_DEVICES                              ", .product_id_number =0x001A  }, //Cooper Wiring Devices
+{.product_id_name = "MFG_ID_CORNUCOPIA_CORP                                    ", .product_id_number =0x012D  }, //Cornucopia Corp
+{.product_id_name = "MFG_ID_COVENTIVE_TECHNOLOGIES_INC                         ", .product_id_number =0x009D  }, //Coventive Technologies Inc.
+{.product_id_name = "MFG_ID_CYBERHOUSE                                         ", .product_id_number =0x0014  }, //Cyberhouse
+{.product_id_name = "MFG_ID_CYBERTAN_TECHNOLOGY_INC                            ", .product_id_number =0x0067  }, //CyberTAN Technology, Inc.
+{.product_id_name = "MFG_ID_CYTECH_TECHNOLOGY_PRE_LTD                          ", .product_id_number =0x0030  }, //Cytech Technology Pre Ltd.
+{.product_id_name = "MFG_ID_DANFOSS                                            ", .product_id_number =0x0002  }, //Danfoss
+{.product_id_name = "MFG_ID_DEFACONTROLS_BV                                    ", .product_id_number =0x013F  }, //Defacontrols BV
+{.product_id_name = "MFG_ID_DESTINY_NETWORKS                                   ", .product_id_number =0x0031  }, //Destiny Networks
+{.product_id_name = "MFG_ID_DIEHL_AKO                                          ", .product_id_number =0x0103  }, //Diehl AKO
+{.product_id_name = "MFG_ID_DIGITAL_5_INC                                      ", .product_id_number =0x0032  }, //Digital 5, Inc.
+{.product_id_name = "MFG_ID_DYNAQUIP_CONTROLS                                  ", .product_id_number =0x0132  }, //DynaQuip Controls
+{.product_id_name = "MFG_ID_ECOLINK                                            ", .product_id_number =0x014A  }, //Ecolink
+{.product_id_name = "MFG_ID_EKA_SYSTEMS                                        ", .product_id_number =0x0087  }, //Eka Systems
+{.product_id_name = "MFG_ID_ELECTRONIC_SOLUTIONS                               ", .product_id_number =0x0033  }, //Electronic Solutions
+{.product_id_name = "MFG_ID_ELGEV_ELECTRONICS_LTD                              ", .product_id_number =0x0034  }, //El-Gev Electronics LTD
+{.product_id_name = "MFG_ID_ELK_PRODUCTS_INC                                   ", .product_id_number =0x001B  }, //ELK Products, Inc.
+{.product_id_name = "MFG_ID_EMBEDIT_AS                                         ", .product_id_number =0x0035  }, //Embedit A/S
+{.product_id_name = "MFG_ID_ENBLINK_CO_LTD                                     ", .product_id_number =0x014D  }, //Enblink Co. Ltd
+{.product_id_name = "MFG_ID_EUROTRONICS                                        ", .product_id_number =0x0148  }, //Eurotronics
+{.product_id_name = "MFG_ID_EVERSPRING                                         ", .product_id_number =0x0060  }, //Everspring
+{.product_id_name = "MFG_ID_EVOLVE                                             ", .product_id_number =0x0113  }, //Evolve
+{.product_id_name = "MFG_ID_EXCEPTIONAL_INNOVATIONS                            ", .product_id_number =0x0036  }, //Exceptional Innovations
+{.product_id_name = "MFG_ID_EXHAUSTO                                           ", .product_id_number =0x0004  }, //Exhausto
+{.product_id_name = "MFG_ID_EXIGENT_SENSORS                                    ", .product_id_number =0x009F  }, //Exigent Sensors
+{.product_id_name = "MFG_ID_EXPRESS_CONTROLS                                   ", .product_id_number =0x001E  }, //Express Controls (former Ryherd Ventures)
+{.product_id_name = "MFG_ID_FAKRO                                              ", .product_id_number =0x0085  }, //Fakro
+{.product_id_name = "MFG_ID_FIBARGROUP                                         ", .product_id_number =0x010F  }, //Fibargroup
+{.product_id_name = "MFG_ID_FIBARO                                             ", .product_id_number =0x2000  }, //Fibaro
+{.product_id_name = "MFG_ID_FOARD_SYSTEMS                                      ", .product_id_number =0x0037  }, //Foard Systems
+{.product_id_name = "MFG_ID_FOLLOWGOOD_TECHNOLOGY_COMPANY_LTD                  ", .product_id_number =0x0137  }, //FollowGood Technology Company Ltd.
+{.product_id_name = "MFG_ID_FORTREZZ_LLC                                       ", .product_id_number =0x0084  }, //FortrezZ LLC
+{.product_id_name = "MFG_ID_FOXCONN                                            ", .product_id_number =0x011D  }, //Foxconn
+{.product_id_name = "MFG_ID_FROSTDALE                                          ", .product_id_number =0x0110  }, //Frostdale
+{.product_id_name = "MFG_ID_GOOD_WAY_TECHNOLOGY_CO_LTD                         ", .product_id_number =0x0068  }, //Good Way Technology Co., Ltd
+{.product_id_name = "MFG_ID_GREENWAVE_REALITY_INC                              ", .product_id_number =0x0099  }, //GreenWave Reality Inc.
+{.product_id_name = "MFG_ID_HITECH_AUTOMATION                                  ", .product_id_number =0x0017  }, //HiTech Automation
+{.product_id_name = "MFG_ID_HOLTEC_ELECTRONICS_BV                              ", .product_id_number =0x013E  }, //Holtec Electronics BV
+{.product_id_name = "MFG_ID_HOME_AUTOMATED_INC                                 ", .product_id_number =0x005B  }, //Home Automated Inc.
+{.product_id_name = "MFG_ID_HOME_AUTOMATED_LIVING                              ", .product_id_number =0x000D  }, //Home Automated Living
+{.product_id_name = "MFG_ID_HOME_AUTOMATION_EUROPE                             ", .product_id_number =0x009A  }, //Home Automation Europe
+{.product_id_name = "MFG_ID_HOME_DIRECTOR                                      ", .product_id_number =0x0038  }, //Home Director
+{.product_id_name = "MFG_ID_HOMEMANAGEABLES_INC                                ", .product_id_number =0x0070  }, //Homemanageables, Inc.
+{.product_id_name = "MFG_ID_HOMEPRO                                            ", .product_id_number =0x0050  }, //Homepro
+{.product_id_name = "MFG_ID_HOMESCENARIO                                       ", .product_id_number =0x0162  }, //HomeScenario
+{.product_id_name = "MFG_ID_HOMESEER_TECHNOLOGIES                              ", .product_id_number =0x000C  }, //HomeSeer Technologies
+{.product_id_name = "MFG_ID_HONEYWELL                                          ", .product_id_number =0x0039  }, //Honeywell
+{.product_id_name = "MFG_ID_HORSTMANN_CONTROLS_LIMITED                         ", .product_id_number =0x0059  }, //Horstmann Controls Limited
+{.product_id_name = "MFG_ID_ICOM_TECHNOLOGY_BV                                 ", .product_id_number =0x0011  }, //iCOM Technology b.v.
+{.product_id_name = "MFG_ID_INGERSOLL_RAND_SCHLAGE                             ", .product_id_number =0x006C  }, //Ingersoll Rand (Schlage)
+{.product_id_name = "MFG_ID_INGERSOLL_RAND_ECOLINK                             ", .product_id_number =0x011F  }, //Ingersoll Rand (Former Ecolink)
+{.product_id_name = "MFG_ID_INLON_SRL                                          ", .product_id_number =0x003A  }, //Inlon Srl
+{.product_id_name = "MFG_ID_INNOBAND_TECHNOLOGIES_INC                          ", .product_id_number =0x0141  }, //Innoband Technologies, Inc
+{.product_id_name = "MFG_ID_INNOVUS                                            ", .product_id_number =0x0077  }, //INNOVUS
+{.product_id_name = "MFG_ID_INTEL                                              ", .product_id_number =0x0006  }, //Intel
+{.product_id_name = "MFG_ID_INTELLICON                                         ", .product_id_number =0x001C  }, //IntelliCon
+{.product_id_name = "MFG_ID_INTERMATIC                                         ", .product_id_number =0x0005  }, //Intermatic
+{.product_id_name = "MFG_ID_INTERNET_DOM                                       ", .product_id_number =0x0013  }, //Internet Dom
+{.product_id_name = "MFG_ID_IR_SEC_SAFETY                                      ", .product_id_number =0x003B  }, //IR Sec. & Safety
+{.product_id_name = "MFG_ID_IWATSU                                             ", .product_id_number =0x0123  }, //IWATSU
+{.product_id_name = "MFG_ID_JASCO_PRODUCTS                                     ", .product_id_number =0x0063  }, //Jasco Products
+{.product_id_name = "MFG_ID_KAMSTRUP_AS                                        ", .product_id_number =0x0091  }, //Kamstrup A/S
+{.product_id_name = "MFG_ID_LAGOTEK_CORPORATION                                ", .product_id_number =0x0051  }, //Lagotek Corporation
+{.product_id_name = "MFG_ID_LEVITON                                            ", .product_id_number =0x001D  }, //Leviton
+{.product_id_name = "MFG_ID_LIFESTYLE_NETWORKS                                 ", .product_id_number =0x003C  }, //Lifestyle Networks
+{.product_id_name = "MFG_ID_LINEAR_CORP                                        ", .product_id_number =0x014F  }, //Linear Corp
+{.product_id_name = "MFG_ID_LIVING_STYLE_ENTERPRISES_LTD                       ", .product_id_number =0x013A  }, //Living Style Enterprises, Ltd.
+{.product_id_name = "MFG_ID_LOGITECH                                           ", .product_id_number =0x007F  }, //Logitech
+{.product_id_name = "MFG_ID_LOUDWATER_TECHNOLOGIES_LLC                         ", .product_id_number =0x0025  }, //Loudwater Technologies, LLC
+{.product_id_name = "MFG_ID_LS_CONTROL                                         ", .product_id_number =0x0071  }, //LS Control
+{.product_id_name = "MFG_ID_MARMITEK_BV                                        ", .product_id_number =0x003D  }, //Marmitek BV
+{.product_id_name = "MFG_ID_MARTEC_ACCESS_PRODUCTS                             ", .product_id_number =0x003E  }, //Martec Access Products
+{.product_id_name = "MFG_ID_MB_TURN_KEY_DESIGN                                 ", .product_id_number =0x008F  }, //MB Turn Key Design
+{.product_id_name = "MFG_ID_MERTEN                                             ", .product_id_number =0x007A  }, //Merten
+{.product_id_name = "MFG_ID_MITSUMI                                            ", .product_id_number =0x0112  }, //MITSUMI
+{.product_id_name = "MFG_ID_MONSTER_CABLE                                      ", .product_id_number =0x007E  }, //Monster Cable
+{.product_id_name = "MFG_ID_MOTOROLA                                           ", .product_id_number =0x003F  }, //Motorola
+{.product_id_name = "MFG_ID_MTC_MAINTRONIC_GERMANY                             ", .product_id_number =0x0083  }, //MTC Maintronic Germany
+{.product_id_name = "MFG_ID_NAPCO_SECURITY_TECHNOLOGIES_INC                    ", .product_id_number =0x0121  }, //Napco Security Technologies, Inc.
+{.product_id_name = "MFG_ID_NORTHQ                                             ", .product_id_number =0x0096  }, //NorthQ
+{.product_id_name = "MFG_ID_NOVAR_ELECTRICAL_DEVICES_AND_SYSTEMS_EDS           ", .product_id_number =0x0040  }, //Novar Electrical Devices and Systems (EDS)
+{.product_id_name = "MFG_ID_OMNIMA_LIMITED                                     ", .product_id_number =0x0119  }, //Omnima Limited
+{.product_id_name = "MFG_ID_ONSITE_PRO                                         ", .product_id_number =0x014C  }, //OnSite Pro
+{.product_id_name = "MFG_ID_OPENPEAK_INC                                       ", .product_id_number =0x0041  }, //OpenPeak Inc.
+{.product_id_name = "MFG_ID_PHILIO_TECHNOLOGY_CORP                             ", .product_id_number =0x013C  }, //Philio Technology Corp
+{.product_id_name = "MFG_ID_POLYCONTROL                                        ", .product_id_number =0x010E  }, //Poly-control
+{.product_id_name = "MFG_ID_POWERLYNX                                          ", .product_id_number =0x0016  }, //PowerLynx
+{.product_id_name = "MFG_ID_PRAGMATIC_CONSULTING_INC                           ", .product_id_number =0x0042  }, //Pragmatic Consulting Inc.
+{.product_id_name = "MFG_ID_PULSE_TECHNOLOGIES_ASPALIS                         ", .product_id_number =0x005D  }, //Pulse Technologies (Aspalis)
+{.product_id_name = "MFG_ID_QEES                                               ", .product_id_number =0x0095  }, //Qees
+{.product_id_name = "MFG_ID_QUBY                                               ", .product_id_number =0x0130  }, //Quby
+{.product_id_name = "MFG_ID_RADIO_THERMOSTAT_COMPANY_OF_AMERICA_RTC            ", .product_id_number =0x0098  }, //Radio Thermostat Company of America (RTC)
+{.product_id_name = "MFG_ID_RARITAN                                            ", .product_id_number =0x008E  }, //Raritan
+{.product_id_name = "MFG_ID_REITZGROUPDE                                       ", .product_id_number =0x0064  }, //Reitz-Group.de
+{.product_id_name = "MFG_ID_REMOTEC_TECHNOLOGY_LTD                             ", .product_id_number =0x5254  }, //Remotec Technology Ltd
+{.product_id_name = "MFG_ID_RESIDENTIAL_CONTROL_SYSTEMS_INC_RCS                ", .product_id_number =0x0010  }, //Residential Control Systems, Inc. (RCS)
+{.product_id_name = "MFG_ID_RIMPORT_LTD                                        ", .product_id_number =0x0147  }, //R-import Ltd.
+{.product_id_name = "MFG_ID_RS_SCENE_AUTOMATION                                ", .product_id_number =0x0065  }, //RS Scene Automation
+{.product_id_name = "MFG_ID_SAECO                                              ", .product_id_number =0x0139  }, //Saeco
+{.product_id_name = "MFG_ID_SAN_SHIH_ELECTRICAL_ENTERPRISE_CO_LTD              ", .product_id_number =0x0093  }, //San Shih Electrical Enterprise Co., Ltd.
+{.product_id_name = "MFG_ID_SANAV                                              ", .product_id_number =0x012C  }, //SANAV
+{.product_id_name = "MFG_ID_SCIENTIA_TECHNOLOGIES_INC                          ", .product_id_number =0x001F  }, //Scientia Technologies, Inc.
+{.product_id_name = "MFG_ID_SECURE_WIRELESS                                    ", .product_id_number =0x011E  }, //Secure Wireless
+{.product_id_name = "MFG_ID_SELUXIT                                            ", .product_id_number =0x0069  }, //Seluxit
+{.product_id_name = "MFG_ID_SENMATIC_AS                                        ", .product_id_number =0x0043  }, //Senmatic A/S
+{.product_id_name = "MFG_ID_SEQUOIA_TECHNOLOGY_LTD                             ", .product_id_number =0x0044  }, //Sequoia Technology LTD
+{.product_id_name = "MFG_ID_SIGMA_DESIGNS                                      ", .product_id_number =0x0000  }, //Sigma Designs
+{.product_id_name = "MFG_ID_SINE_WIRELESS                                      ", .product_id_number =0x0045  }, //Sine Wireless
+{.product_id_name = "MFG_ID_SMART_PRODUCTS_INC                                 ", .product_id_number =0x0046  }, //Smart Products, Inc.
+{.product_id_name = "MFG_ID_SMK_MANUFACTURING_INC                              ", .product_id_number =0x0102  }, //SMK Manufacturing Inc.
+{.product_id_name = "MFG_ID_SOMFY                                              ", .product_id_number =0x0047  }, //Somfy
+{.product_id_name = "MFG_ID_SYLVANIA                                           ", .product_id_number =0x0009  }, //Sylvania
+{.product_id_name = "MFG_ID_SYSTECH_CORPORATION                                ", .product_id_number =0x0136  }, //Systech Corporation
+{.product_id_name = "MFG_ID_TEAM_PRECISION_PCL                                 ", .product_id_number =0x0089  }, //Team Precision PCL
+{.product_id_name = "MFG_ID_TECHNIKU                                           ", .product_id_number =0x000A  }, //Techniku
+{.product_id_name = "MFG_ID_TELL_IT_ONLINE                                     ", .product_id_number =0x0012  }, //Tell It Online
+{.product_id_name = "MFG_ID_TELSEY                                             ", .product_id_number =0x0048  }, //Telsey
+{.product_id_name = "MFG_ID_THERE_CORPORATION                                  ", .product_id_number =0x010C  }, //There Corporation
+{.product_id_name = "MFG_ID_TKB_HOME                                           ", .product_id_number =0x0118  }, //TKB Home
+{.product_id_name = "MFG_ID_TKH_GROUP_EMINENT                                  ", .product_id_number =0x011C  }, //TKH Group / Eminent
+{.product_id_name = "MFG_ID_TRANE_CORPORATION                                  ", .product_id_number =0x008B  }, //Trane Corporation
+{.product_id_name = "MFG_ID_TRICKLESTAR                                        ", .product_id_number =0x0066  }, //TrickleStar
+{.product_id_name = "MFG_ID_TRICKLESTAR_LTD_EMPOWER_CONTROLS_LTD               ", .product_id_number =0x006B  }, //Tricklestar Ltd. (former Empower Controls Ltd.)
+{.product_id_name = "MFG_ID_TRIDIUM                                            ", .product_id_number =0x0055  }, //Tridium
+{.product_id_name = "MFG_ID_TWISTHINK                                          ", .product_id_number =0x0049  }, //Twisthink
+{.product_id_name = "MFG_ID_UNIVERSAL_ELECTRONICS_INC                          ", .product_id_number =0x0020  }, //Universal Electronics Inc.
+{.product_id_name = "MFG_ID_VDA                                                ", .product_id_number =0x010A  }, //VDA
+{.product_id_name = "MFG_ID_VERO_DUCO                                          ", .product_id_number =0x0080  }, //Vero Duco
+{.product_id_name = "MFG_ID_VIEWSONIC_CORPORATION                              ", .product_id_number =0x005E  }, //ViewSonic Corporation
+{.product_id_name = "MFG_ID_VIMAR_CRS                                          ", .product_id_number =0x0007  }, //Vimar CRS
+{.product_id_name = "MFG_ID_VISION_SECURITY                                    ", .product_id_number =0x0109  }, //Vision Security
+{.product_id_name = "MFG_ID_VISUALIZE                                          ", .product_id_number =0x004A  }, //Visualize
+{.product_id_name = "MFG_ID_WATT_STOPPER                                       ", .product_id_number =0x004B  }, //Watt Stopper
+{.product_id_name = "MFG_ID_WAYNE_DALTON                                       ", .product_id_number =0x0008  }, //Wayne Dalton
+{.product_id_name = "MFG_ID_WENZHOU_MTLC_ELECTRIC_APPLIANCES_COLTD             ", .product_id_number =0x011A  }, //Wenzhou MTLC Electric Appliances Co.,Ltd.
+{.product_id_name = "MFG_ID_WIDOM                                              ", .product_id_number =0x0149  }, //wiDom
+{.product_id_name = "MFG_ID_WILSHINE_HOLDING_CO_LTD                            ", .product_id_number =0x012D  }, //Wilshine Holding Co., Ltd
+{.product_id_name = "MFG_ID_WINTOP                                             ", .product_id_number =0x0097  }, //Wintop
+{.product_id_name = "MFG_ID_WOODWARD_LABS                                      ", .product_id_number =0x004C  }, //Woodward Labs
+{.product_id_name = "MFG_ID_WRAP                                               ", .product_id_number =0x0003  }, //Wrap
+{.product_id_name = "MFG_ID_WUHAN_NWD_TECHNOLOGY_CO_LTD                        ", .product_id_number =0x012E  }, //Wuhan NWD Technology Co., Ltd.
+{.product_id_name = "MFG_ID_XANBOO                                             ", .product_id_number =0x004D  }, //Xanboo
+{.product_id_name = "MFG_ID_ZDATA_LLC                                          ", .product_id_number =0x004E  }, //Zdata, LLC.
+{.product_id_name = "MFG_ID_ZIPATO                                             ", .product_id_number =0x0131  }, //Zipato
+{.product_id_name = "MFG_ID_ZONOFF                                             ", .product_id_number =0x0120  }, //Zonoff
+{.product_id_name = "MFG_ID_ZWAVE_TECHNOLOGIA                                  ", .product_id_number =0x004F  }, //Z-Wave Technologia
+{.product_id_name = "MFG_ID_ZWAVEME                                            ", .product_id_number =0x0115  }, //Z-Wave.Me
+{.product_id_name = "MFG_ID_ZYKRONIX                                           ", .product_id_number =0x0021  }, //Zykronix
+{.product_id_name = "MFG_ID_ZYXEL                                              ", .product_id_number =0x0135  }, //ZyXEL
+
+};
+
+Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
+{.command_class_suport = "COMMAND_CLASS_ALARM                                                             ",.class_support_number = 0x71},
+{.command_class_suport = "COMMAND_CLASS_ALARM_V2                                                          ",.class_support_number = 0x71},
+{.command_class_suport = "COMMAND_CLASS_NOTIFICATION_V3                                                   ",.class_support_number = 0x71},
+{.command_class_suport = "COMMAND_CLASS_NOTIFICATION_V4                                                   ",.class_support_number = 0x71},
+{.command_class_suport = "COMMAND_CLASS_APPLICATION_STATUS                                                ",.class_support_number = 0x22},
+{.command_class_suport = "COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION                                 ",.class_support_number = 0x9B},
+{.command_class_suport = "COMMAND_CLASS_ASSOCIATION                                                       ",.class_support_number = 0x85},
+{.command_class_suport = "COMMAND_CLASS_ASSOCIATION_V2                                                    ",.class_support_number = 0x85},
+{.command_class_suport = "COMMAND_CLASS_AV_CONTENT_DIRECTORY_MD                                           ",.class_support_number = 0x95},
+{.command_class_suport = "COMMAND_CLASS_AV_CONTENT_SEARCH_MD                                              ",.class_support_number = 0x97},
+{.command_class_suport = "COMMAND_CLASS_AV_RENDERER_STATUS                                                ",.class_support_number = 0x96},
+{.command_class_suport = "COMMAND_CLASS_AV_TAGGING_MD                                                     ",.class_support_number = 0x99},
+{.command_class_suport = "COMMAND_CLASS_BASIC_TARIFF_INFO                                                 ",.class_support_number = 0x36},
+{.command_class_suport = "COMMAND_CLASS_BASIC_WINDOW_COVERING                                             ",.class_support_number = 0x50},
+{.command_class_suport = "COMMAND_CLASS_BASIC                                                             ",.class_support_number = 0x20},
+{.command_class_suport = "COMMAND_CLASS_BATTERY                                                           ",.class_support_number = 0x80},
+{.command_class_suport = "COMMAND_CLASS_CHIMNEY_FAN                                                       ",.class_support_number = 0x2A},
+{.command_class_suport = "COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE                                          ",.class_support_number = 0x46},
+{.command_class_suport = "COMMAND_CLASS_CLOCK                                                             ",.class_support_number = 0x81},
+{.command_class_suport = "COMMAND_CLASS_CONFIGURATION                                                     ",.class_support_number = 0x70},
+{.command_class_suport = "COMMAND_CLASS_CONFIGURATION_V2                                                  ",.class_support_number = 0x70},
+{.command_class_suport = "COMMAND_CLASS_CONTROLLER_REPLICATION                                            ",.class_support_number = 0x21},
+{.command_class_suport = "COMMAND_CLASS_CRC_16_ENCAP                                                      ",.class_support_number = 0x56},
+{.command_class_suport = "COMMAND_CLASS_DCP_CONFIG                                                        ",.class_support_number = 0x3A},
+{.command_class_suport = "COMMAND_CLASS_DCP_MONITOR                                                       ",.class_support_number = 0x3B},
+{.command_class_suport = "COMMAND_CLASS_DOOR_LOCK_LOGGING                                                 ",.class_support_number = 0x4C},
+{.command_class_suport = "COMMAND_CLASS_DOOR_LOCK                                                         ",.class_support_number = 0x62},
+{.command_class_suport = "COMMAND_CLASS_DOOR_LOCK_V2                                                      ",.class_support_number = 0x62},
+{.command_class_suport = "COMMAND_CLASS_ENERGY_PRODUCTION                                                 ",.class_support_number = 0x90},
+{.command_class_suport = "COMMAND_CLASS_FIRMWARE_UPDATE_MD                                                ",.class_support_number = 0x7A},
+{.command_class_suport = "COMMAND_CLASS_FIRMWARE_UPDATE_MD_V2                                             ",.class_support_number = 0x7A},
+{.command_class_suport = "COMMAND_CLASS_GEOGRAPHIC_LOCATION                                               ",.class_support_number = 0x8C},
+{.command_class_suport = "COMMAND_CLASS_GROUPING_NAME                                                     ",.class_support_number = 0x7B},
+{.command_class_suport = "COMMAND_CLASS_HAIL                                                              ",.class_support_number = 0x82},
+{.command_class_suport = "COMMAND_CLASS_HRV_CONTROL                                                       ",.class_support_number = 0x39},
+{.command_class_suport = "COMMAND_CLASS_HRV_STATUS                                                        ",.class_support_number = 0x37},
+{.command_class_suport = "COMMAND_CLASS_INDICATOR                                                         ",.class_support_number = 0x87},
+{.command_class_suport = "COMMAND_CLASS_IP_CONFIGURATION                                                  ",.class_support_number = 0x9A},
+{.command_class_suport = "COMMAND_CLASS_LANGUAGE                                                          ",.class_support_number = 0x89},
+{.command_class_suport = "COMMAND_CLASS_LOCK                                                              ",.class_support_number = 0x76},
+{.command_class_suport = "COMMAND_CLASS_MANUFACTURER_PROPRIETARY                                          ",.class_support_number = 0x91},
+{.command_class_suport = "COMMAND_CLASS_MANUFACTURER_SPECIFIC                                             ",.class_support_number = 0x72},
+{.command_class_suport = "COMMAND_CLASS_MANUFACTURER_SPECIFIC_V2                                          ",.class_support_number = 0x72},
+{.command_class_suport = "COMMAND_CLASS_MARK                                                              ",.class_support_number = 0xEF},
+{.command_class_suport = "COMMAND_CLASS_METER_PULSE                                                       ",.class_support_number = 0x35},
+{.command_class_suport = "COMMAND_CLASS_METER_TBL_CONFIG                                                  ",.class_support_number = 0x3C},
+{.command_class_suport = "COMMAND_CLASS_METER_TBL_MONITOR                                                 ",.class_support_number = 0x3D},
+{.command_class_suport = "COMMAND_CLASS_METER_TBL_MONITOR_V2                                              ",.class_support_number = 0x3D},
+{.command_class_suport = "COMMAND_CLASS_METER_TBL_PUSH                                                    ",.class_support_number = 0x3E},
+{.command_class_suport = "COMMAND_CLASS_METER                                                             ",.class_support_number = 0x32},
+{.command_class_suport = "COMMAND_CLASS_METER_V2                                                          ",.class_support_number = 0x32},
+{.command_class_suport = "COMMAND_CLASS_METER_V3                                                          ",.class_support_number = 0x32},
+{.command_class_suport = "COMMAND_CLASS_METER_V4                                                          ",.class_support_number = 0x32},
+{.command_class_suport = "COMMAND_CLASS_MTP_WINDOW_COVERING                                               ",.class_support_number = 0x51},
+{.command_class_suport = "COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION_V2                                      ",.class_support_number = 0x8E},
+{.command_class_suport = "COMMAND_CLASS_MULTI_CHANNEL_V2                                                  ",.class_support_number = 0x60},
+{.command_class_suport = "COMMAND_CLASS_MULTI_CHANNEL_V3                                                  ",.class_support_number = 0x60},
+{.command_class_suport = "COMMAND_CLASS_MULTI_CMD                                                         ",.class_support_number = 0x8F},
+{.command_class_suport = "COMMAND_CLASS_MULTI_INSTANCE_ASSOCIATION                                        ",.class_support_number = 0x8E}, /*Discontinued*/
+{.command_class_suport = "COMMAND_CLASS_MULTI_INSTANCE                                                    ",.class_support_number = 0x60}, /*Discontinued*/
+{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_PROXY                                          ",.class_support_number = 0x52},
+{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_BASIC                                          ",.class_support_number = 0x4D},
+{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_INCLUSION                                      ",.class_support_number = 0x34},
+{.command_class_suport = "COMMAND_CLASS_NO_OPERATION                                                      ",.class_support_number = 0x00},
+{.command_class_suport = "COMMAND_CLASS_NODE_NAMING                                                       ",.class_support_number = 0x77},
+{.command_class_suport = "COMMAND_CLASS_NON_INTEROPERABLE                                                 ",.class_support_number = 0xF0},
+{.command_class_suport = "COMMAND_CLASS_POWERLEVEL                                                        ",.class_support_number = 0x73},
+{.command_class_suport = "COMMAND_CLASS_PREPAYMENT_ENCAPSULATION                                          ",.class_support_number = 0x41},
+{.command_class_suport = "COMMAND_CLASS_PREPAYMENT                                                        ",.class_support_number = 0x3F},
+{.command_class_suport = "COMMAND_CLASS_PROPRIETARY                                                       ",.class_support_number = 0x88},
+{.command_class_suport = "COMMAND_CLASS_PROTECTION                                                        ",.class_support_number = 0x75},
+{.command_class_suport = "COMMAND_CLASS_PROTECTION_V2                                                     ",.class_support_number = 0x75},
+{.command_class_suport = "COMMAND_CLASS_RATE_TBL_CONFIG                                                   ",.class_support_number = 0x48},
+{.command_class_suport = "COMMAND_CLASS_RATE_TBL_MONITOR                                                  ",.class_support_number = 0x49},
+{.command_class_suport = "COMMAND_CLASS_REMOTE_ASSOCIATION_ACTIVATE                                       ",.class_support_number = 0x7C},
+{.command_class_suport = "COMMAND_CLASS_REMOTE_ASSOCIATION                                                ",.class_support_number = 0x7D},
+{.command_class_suport = "COMMAND_CLASS_SCENE_ACTIVATION                                                  ",.class_support_number = 0x2B},
+{.command_class_suport = "COMMAND_CLASS_SCENE_ACTUATOR_CONF                                               ",.class_support_number = 0x2C},
+{.command_class_suport = "COMMAND_CLASS_SCENE_CONTROLLER_CONF                                             ",.class_support_number = 0x2D},
+{.command_class_suport = "COMMAND_CLASS_SCHEDULE_ENTRY_LOCK                                               ",.class_support_number = 0x4E},
+{.command_class_suport = "COMMAND_CLASS_SCHEDULE_ENTRY_LOCK_V2                                            ",.class_support_number = 0x4E},
+{.command_class_suport = "COMMAND_CLASS_SCHEDULE_ENTRY_LOCK_V3                                            ",.class_support_number = 0x4E},
+{.command_class_suport = "COMMAND_CLASS_SCREEN_ATTRIBUTES                                                 ",.class_support_number = 0x93},
+{.command_class_suport = "COMMAND_CLASS_SCREEN_ATTRIBUTES_V2                                              ",.class_support_number = 0x93},
+{.command_class_suport = "COMMAND_CLASS_SCREEN_MD                                                         ",.class_support_number = 0x92},
+{.command_class_suport = "COMMAND_CLASS_SCREEN_MD_V2                                                      ",.class_support_number = 0x92},
+{.command_class_suport = "COMMAND_CLASS_SECURITY_PANEL_MODE                                               ",.class_support_number = 0x24},
+{.command_class_suport = "COMMAND_CLASS_SECURITY_PANEL_ZONE_SENSOR                                        ",.class_support_number = 0x2F},
+{.command_class_suport = "COMMAND_CLASS_SECURITY_PANEL_ZONE                                               ",.class_support_number = 0x2E},
+{.command_class_suport = "COMMAND_CLASS_SECURITY                                                          ",.class_support_number = 0x98},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_ALARM                                                      ",.class_support_number = 0x9C}, /*SDS10963-4 The Sensor Alarm {.command_class_suport = "COMMAND class can be used to realize Sensor Alarms.*/
+{.command_class_suport = "COMMAND_CLASS_SENSOR_BINARY                                                     ",.class_support_number = 0x30},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_BINARY_V2                                                  ",.class_support_number = 0x30},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_CONFIGURATION                                              ",.class_support_number = 0x9E}, /*This {.command_class_suport = "COMMAND class adds the possibility for sensors to act on either a measured value or on a*/
+{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL                                                 ",.class_support_number = 0x31},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V2                                              ",.class_support_number = 0x31},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V3                                              ",.class_support_number = 0x31},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V4                                              ",.class_support_number = 0x31},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V5                                              ",.class_support_number = 0x31},
+{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V6                                              ",.class_support_number = 0x31},
+{.command_class_suport = "COMMAND_CLASS_SILENCE_ALARM                                                     ",.class_support_number = 0x9D}, /*SDS10963-4 The Alarm Silence {.command_class_suport = "COMMAND class can be used to nuisance silence to temporarily disable the sounding*/
+{.command_class_suport = "COMMAND_CLASS_SIMPLE_AV_CONTROL                                                 ",.class_support_number = 0x94},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_ALL                                                        ",.class_support_number = 0x27},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_BINARY                                                     ",.class_support_number = 0x25},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_MULTILEVEL                                                 ",.class_support_number = 0x26},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_MULTILEVEL_V2                                              ",.class_support_number = 0x26},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_MULTILEVEL_V3                                              ",.class_support_number = 0x26},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_TOGGLE_BINARY                                              ",.class_support_number = 0x28},
+{.command_class_suport = "COMMAND_CLASS_SWITCH_TOGGLE_MULTILEVEL                                          ",.class_support_number = 0x29},
+{.command_class_suport = "COMMAND_CLASS_TARIFF_CONFIG                                                     ",.class_support_number = 0x4A},
+{.command_class_suport = "COMMAND_CLASS_TARIFF_TBL_MONITOR                                                ",.class_support_number = 0x4B},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE                                               ",.class_support_number = 0x44},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE_V2                                            ",.class_support_number = 0x44},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE_V3                                            ",.class_support_number = 0x44},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE_V4                                            ",.class_support_number = 0x44},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_STATE                                              ",.class_support_number = 0x45},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_HEATING                                                ",.class_support_number = 0x38},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_MODE                                                   ",.class_support_number = 0x40},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_MODE_V2                                                ",.class_support_number = 0x40},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_MODE_V3                                                ",.class_support_number = 0x40},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_OPERATING_STATE                                        ",.class_support_number = 0x42},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_OPERATING_STATE_V2                                     ",.class_support_number = 0x42},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETBACK                                                ",.class_support_number = 0x47},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETPOINT                                               ",.class_support_number = 0x43},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETPOINT_V2                                            ",.class_support_number = 0x43},
+{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETPOINT_V3                                            ",.class_support_number = 0x43},
+{.command_class_suport = "COMMAND_CLASS_TIME_PARAMETERS                                                   ",.class_support_number = 0x8B},
+{.command_class_suport = "COMMAND_CLASS_TIME                                                              ",.class_support_number = 0x8A},
+{.command_class_suport = "COMMAND_CLASS_TIME_V2                                                           ",.class_support_number = 0x8A},
+{.command_class_suport = "COMMAND_CLASS_TRANSPORT_SERVICE                                                 ",.class_support_number = 0x55},
+{.command_class_suport = "COMMAND_CLASS_TRANSPORT_SERVICE_V2                                              ",.class_support_number = 0x55},
+{.command_class_suport = "COMMAND_CLASS_USER_CODE                                                         ",.class_support_number = 0x63},
+{.command_class_suport = "COMMAND_CLASS_VERSION                                                           ",.class_support_number = 0x86},
+{.command_class_suport = "COMMAND_CLASS_VERSION_V2                                                        ",.class_support_number = 0x86},
+{.command_class_suport = "COMMAND_CLASS_WAKE_UP                                                           ",.class_support_number = 0x84},
+{.command_class_suport = "COMMAND_CLASS_WAKE_UP_V2                                                        ",.class_support_number = 0x84},
+{.command_class_suport = "COMMAND_CLASS_ZIP_6LOWPAN                                                       ",.class_support_number = 0x4F},
+{.command_class_suport = "COMMAND_CLASS_ZIP                                                               ",.class_support_number = 0x23},
+{.command_class_suport = "COMMAND_CLASS_ZIP_V2                                                            ",.class_support_number = 0x23},
+{.command_class_suport = "COMMAND_CLASS_APPLICATION_CAPABILITY                                            ",.class_support_number = 0x57},
+{.command_class_suport = "COMMAND_CLASS_COLOR_CONTROL                                                     ",.class_support_number = 0x33},
+{.command_class_suport = "COMMAND_CLASS_COLOR_CONTROL_V2                                                  ",.class_support_number = 0x33},
+{.command_class_suport = "COMMAND_CLASS_SCHEDULE                                                          ",.class_support_number = 0x53},
+{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_PRIMARY                                        ",.class_support_number = 0x54},
+{.command_class_suport = "COMMAND_CLASS_ZIP_ND                                                            ",.class_support_number = 0x58},
+{.command_class_suport = "COMMAND_CLASS_ASSOCIATION_GRP_INFO                                              ",.class_support_number = 0x59},
+{.command_class_suport = "COMMAND_CLASS_DEVICE_RESET_LOCALLY                                              ",.class_support_number = 0x5A},
+{.command_class_suport = "COMMAND_CLASS_CENTRAL_SCENE                                                     ",.class_support_number = 0x5B},
+{.command_class_suport = "COMMAND_CLASS_IP_ASSOCIATION                                                    ",.class_support_number = 0x5C},
+{.command_class_suport = "COMMAND_CLASS_ANTITHEFT                                                         ",.class_support_number = 0x5D},
+{.command_class_suport = "COMMAND_CLASS_ANTITHEFT_V2                                                      ",.class_support_number = 0x5D},
+{.command_class_suport = "COMMAND_CLASS_ZWAVEPLUS_INFO                                                    ",.class_support_number = 0x5E}, /*SDS11907-3*/
+{.command_class_suport = "COMMAND_CLASS_ZWAVEPLUS_INFO_V2                                                 ",.class_support_number = 0x5E}, /*SDS11907-3*/
+{.command_class_suport = "COMMAND_CLASS_ZIP_GATEWAY                                                       ",.class_support_number = 0x5F},
+{.command_class_suport = "COMMAND_CLASS_ZIP_PORTAL                                                        ",.class_support_number = 0x61},
+{.command_class_suport = "COMMAND_CLASS_APPLIANCE                                                         ",.class_support_number = 0x64},
+{.command_class_suport = "COMMAND_CLASS_DMX                                                               ",.class_support_number = 0x65},
+{.command_class_suport = "COMMAND_CLASS_BARRIER_OPERATOR                                                  ",.class_support_number = 0x66},
+
+};
+
+Manufacture_id_value_t manu_id[manu_pID_max] = {
+{.manufacture = " NOT_DEFINED_OR_UNDEFINED                           ", .manufacture_id_value =0xFFFF  }, //Not defined or un-defined
+{.manufacture = " 2B_ELECTRONICS                                     ", .manufacture_id_value =0x0028  }, //2B Electronics
+{.manufacture = " 2GIG_TECHNOLOGIES_INC                              ", .manufacture_id_value =0x009B  }, //2gig Technologies Inc.
+{.manufacture = " 3E_TECHNOLOGIES                                    ", .manufacture_id_value =0x002A  }, //3e Technologies
+{.manufacture = " A1_COMPONENTS                                      ", .manufacture_id_value =0x0022  }, //A-1 Components
+{.manufacture = " ABILIA                                             ", .manufacture_id_value =0x0117  }, //Abilia
+{.manufacture = " ACT_ADVANCED_CONTROL_TECHNOLOGIES                  ", .manufacture_id_value =0x0001  }, //ACT - Advanced Control Technologies
+{.manufacture = " AEON_LABS                                          ", .manufacture_id_value =0x0086  }, //AEON Labs
+{.manufacture = " AIRLINE_MECHANICAL_CO_LTD                          ", .manufacture_id_value =0x0111  }, //Airline Mechanical Co., Ltd.
+{.manufacture = " ALARMCOM                                           ", .manufacture_id_value =0x0094  }, //Alarm.com
+{.manufacture = " ASIA_HEADING                                       ", .manufacture_id_value =0x0029  }, //Asia Heading
+{.manufacture = " ATECH                                              ", .manufacture_id_value =0x002B  }, //Atech
+{.manufacture = " BALBOA_INSTRUMENTS                                 ", .manufacture_id_value =0x0018  }, //Balboa Instruments
+{.manufacture = " BENEXT                                             ", .manufacture_id_value =0x008A  }, //BeNext
+{.manufacture = " BESAFER                                            ", .manufacture_id_value =0x002C  }, //BeSafer
+{.manufacture = " BFT_SPA                                            ", .manufacture_id_value =0x014B  }, //BFT S.p.A.
+{.manufacture = " BOCA_DEVICES                                       ", .manufacture_id_value =0x0023  }, //Boca Devices
+{.manufacture = " BROADBAND_ENERGY_NETWORKS_INC                      ", .manufacture_id_value =0x002D  }, //Broadband Energy Networks Inc.
+{.manufacture = " BULOGICS                                           ", .manufacture_id_value =0x0026  }, //BuLogics
+{.manufacture = " CAMEO_COMMUNICATIONS_INC                           ", .manufacture_id_value =0x009C  }, //Cameo Communications Inc.
+{.manufacture = " CARRIER                                            ", .manufacture_id_value =0x002E  }, //Carrier
+{.manufacture = " CASAWORKS                                          ", .manufacture_id_value =0x000B  }, //CasaWorks
+{.manufacture = " CHECKIT_SOLUTIONS_INC                              ", .manufacture_id_value =0x014E  }, //Check-It Solutions Inc.
+{.manufacture = " CHROMAGIC_TECHNOLOGIES_CORPORATION                 ", .manufacture_id_value =0x0116  }, //Chromagic Technologies Corporation
+{.manufacture = " COLOR_KINETICS_INCORPORATED                        ", .manufacture_id_value =0x002F  }, //Color Kinetics Incorporated
+{.manufacture = " COMPUTIME                                          ", .manufacture_id_value =0x0140  }, //Computime
+{.manufacture = " CONNECTED_OBJECT                                   ", .manufacture_id_value =0x011B  }, //Connected Object
+{.manufacture = " CONTROLTHINK_LC                                    ", .manufacture_id_value =0x0019  }, //ControlThink LC
+{.manufacture = " CONVERGEX_LTD                                      ", .manufacture_id_value =0x000F  }, //ConvergeX Ltd.
+{.manufacture = " COOPER_LIGHTING                                    ", .manufacture_id_value =0x0079  }, //Cooper Lighting
+{.manufacture = " COOPER_WIRING_DEVICES                              ", .manufacture_id_value =0x001A  }, //Cooper Wiring Devices
+{.manufacture = " CORNUCOPIA_CORP                                    ", .manufacture_id_value =0x012D  }, //Cornucopia Corp
+{.manufacture = " COVENTIVE_TECHNOLOGIES_INC                         ", .manufacture_id_value =0x009D  }, //Coventive Technologies Inc.
+{.manufacture = " CYBERHOUSE                                         ", .manufacture_id_value =0x0014  }, //Cyberhouse
+{.manufacture = " CYBERTAN_TECHNOLOGY_INC                            ", .manufacture_id_value =0x0067  }, //CyberTAN Technology, Inc.
+{.manufacture = " CYTECH_TECHNOLOGY_PRE_LTD                          ", .manufacture_id_value =0x0030  }, //Cytech Technology Pre Ltd.
+{.manufacture = " DANFOSS                                            ", .manufacture_id_value =0x0002  }, //Danfoss
+{.manufacture = " DEFACONTROLS_BV                                    ", .manufacture_id_value =0x013F  }, //Defacontrols BV
+{.manufacture = " DESTINY_NETWORKS                                   ", .manufacture_id_value =0x0031  }, //Destiny Networks
+{.manufacture = " DIEHL_AKO                                          ", .manufacture_id_value =0x0103  }, //Diehl AKO
+{.manufacture = " DIGITAL_5_INC                                      ", .manufacture_id_value =0x0032  }, //Digital 5, Inc.
+{.manufacture = " DYNAQUIP_CONTROLS                                  ", .manufacture_id_value =0x0132  }, //DynaQuip Controls
+{.manufacture = " ECOLINK                                            ", .manufacture_id_value =0x014A  }, //Ecolink
+{.manufacture = " EKA_SYSTEMS                                        ", .manufacture_id_value =0x0087  }, //Eka Systems
+{.manufacture = " ELECTRONIC_SOLUTIONS                               ", .manufacture_id_value =0x0033  }, //Electronic Solutions
+{.manufacture = " ELGEV_ELECTRONICS_LTD                              ", .manufacture_id_value =0x0034  }, //El-Gev Electronics LTD
+{.manufacture = " ELK_PRODUCTS_INC                                   ", .manufacture_id_value =0x001B  }, //ELK Products, Inc.
+{.manufacture = " EMBEDIT_AS                                         ", .manufacture_id_value =0x0035  }, //Embedit A/S
+{.manufacture = " ENBLINK_CO_LTD                                     ", .manufacture_id_value =0x014D  }, //Enblink Co. Ltd
+{.manufacture = " EUROTRONICS                                        ", .manufacture_id_value =0x0148  }, //Eurotronics
+{.manufacture = " EVERSPRING                                         ", .manufacture_id_value =0x0060  }, //Everspring
+{.manufacture = " EVOLVE                                             ", .manufacture_id_value =0x0113  }, //Evolve
+{.manufacture = " EXCEPTIONAL_INNOVATIONS                            ", .manufacture_id_value =0x0036  }, //Exceptional Innovations
+{.manufacture = " EXHAUSTO                                           ", .manufacture_id_value =0x0004  }, //Exhausto
+{.manufacture = " EXIGENT_SENSORS                                    ", .manufacture_id_value =0x009F  }, //Exigent Sensors
+{.manufacture = " EXPRESS_CONTROLS                                   ", .manufacture_id_value =0x001E  }, //Express Controls (former Ryherd Ventures)
+{.manufacture = " FAKRO                                              ", .manufacture_id_value =0x0085  }, //Fakro
+{.manufacture = " FIBARGROUP                                         ", .manufacture_id_value =0x010F  }, //Fibargroup
+{.manufacture = " FOARD_SYSTEMS                                      ", .manufacture_id_value =0x0037  }, //Foard Systems
+{.manufacture = " FOLLOWGOOD_TECHNOLOGY_COMPANY_LTD                  ", .manufacture_id_value =0x0137  }, //FollowGood Technology Company Ltd.
+{.manufacture = " FORTREZZ_LLC                                       ", .manufacture_id_value =0x0084  }, //FortrezZ LLC
+{.manufacture = " FOXCONN                                            ", .manufacture_id_value =0x011D  }, //Foxconn
+{.manufacture = " FROSTDALE                                          ", .manufacture_id_value =0x0110  }, //Frostdale
+{.manufacture = " GOOD_WAY_TECHNOLOGY_CO_LTD                         ", .manufacture_id_value =0x0068  }, //Good Way Technology Co., Ltd
+{.manufacture = " GREENWAVE_REALITY_INC                              ", .manufacture_id_value =0x0099  }, //GreenWave Reality Inc.
+{.manufacture = " HITECH_AUTOMATION                                  ", .manufacture_id_value =0x0017  }, //HiTech Automation
+{.manufacture = " HOLTEC_ELECTRONICS_BV                              ", .manufacture_id_value =0x013E  }, //Holtec Electronics BV
+{.manufacture = " HOME_AUTOMATED_INC                                 ", .manufacture_id_value =0x005B  }, //Home Automated Inc.
+{.manufacture = " HOME_AUTOMATED_LIVING                              ", .manufacture_id_value =0x000D  }, //Home Automated Living
+{.manufacture = " HOME_AUTOMATION_EUROPE                             ", .manufacture_id_value =0x009A  }, //Home Automation Europe
+{.manufacture = " HOME_DIRECTOR                                      ", .manufacture_id_value =0x0038  }, //Home Director
+{.manufacture = " HOMEMANAGEABLES_INC                                ", .manufacture_id_value =0x0070  }, //Homemanageables, Inc.
+{.manufacture = " HOMEPRO                                            ", .manufacture_id_value =0x0050  }, //Homepro
+{.manufacture = " HOMESCENARIO                                       ", .manufacture_id_value =0x0162  }, //HomeScenario
+{.manufacture = " HOMESEER_TECHNOLOGIES                              ", .manufacture_id_value =0x000C  }, //HomeSeer Technologies
+{.manufacture = " HONEYWELL                                          ", .manufacture_id_value =0x0039  }, //Honeywell
+{.manufacture = " HORSTMANN_CONTROLS_LIMITED                         ", .manufacture_id_value =0x0059  }, //Horstmann Controls Limited
+{.manufacture = " ICOM_TECHNOLOGY_BV                                 ", .manufacture_id_value =0x0011  }, //iCOM Technology b.v.
+{.manufacture = " INGERSOLL_RAND_SCHLAGE                             ", .manufacture_id_value =0x006C  }, //Ingersoll Rand (Schlage)
+{.manufacture = " INGERSOLL_RAND_ECOLINK                             ", .manufacture_id_value =0x011F  }, //Ingersoll Rand (Former Ecolink)
+{.manufacture = " INLON_SRL                                          ", .manufacture_id_value =0x003A  }, //Inlon Srl
+{.manufacture = " INNOBAND_TECHNOLOGIES_INC                          ", .manufacture_id_value =0x0141  }, //Innoband Technologies, Inc
+{.manufacture = " INNOVUS                                            ", .manufacture_id_value =0x0077  }, //INNOVUS
+{.manufacture = " INTEL                                              ", .manufacture_id_value =0x0006  }, //Intel
+{.manufacture = " INTELLICON                                         ", .manufacture_id_value =0x001C  }, //IntelliCon
+{.manufacture = " INTERMATIC                                         ", .manufacture_id_value =0x0005  }, //Intermatic
+{.manufacture = " INTERNET_DOM                                       ", .manufacture_id_value =0x0013  }, //Internet Dom
+{.manufacture = " IR_SEC_SAFETY                                      ", .manufacture_id_value =0x003B  }, //IR Sec. & Safety
+{.manufacture = " IWATSU                                             ", .manufacture_id_value =0x0123  }, //IWATSU
+{.manufacture = " JASCO_PRODUCTS                                     ", .manufacture_id_value =0x0063  }, //Jasco Products
+{.manufacture = " KAMSTRUP_AS                                        ", .manufacture_id_value =0x0091  }, //Kamstrup A/S
+{.manufacture = " LAGOTEK_CORPORATION                                ", .manufacture_id_value =0x0051  }, //Lagotek Corporation
+{.manufacture = " LEVITON                                            ", .manufacture_id_value =0x001D  }, //Leviton
+{.manufacture = " LIFESTYLE_NETWORKS                                 ", .manufacture_id_value =0x003C  }, //Lifestyle Networks
+{.manufacture = " LINEAR_CORP                                        ", .manufacture_id_value =0x014F  }, //Linear Corp
+{.manufacture = " LIVING_STYLE_ENTERPRISES_LTD                       ", .manufacture_id_value =0x013A  }, //Living Style Enterprises, Ltd.
+{.manufacture = " LOGITECH                                           ", .manufacture_id_value =0x007F  }, //Logitech
+{.manufacture = " LOUDWATER_TECHNOLOGIES_LLC                         ", .manufacture_id_value =0x0025  }, //Loudwater Technologies, LLC
+{.manufacture = " LS_CONTROL                                         ", .manufacture_id_value =0x0071  }, //LS Control
+{.manufacture = " MARMITEK_BV                                        ", .manufacture_id_value =0x003D  }, //Marmitek BV
+{.manufacture = " MARTEC_ACCESS_PRODUCTS                             ", .manufacture_id_value =0x003E  }, //Martec Access Products
+{.manufacture = " MB_TURN_KEY_DESIGN                                 ", .manufacture_id_value =0x008F  }, //MB Turn Key Design
+{.manufacture = " MERTEN                                             ", .manufacture_id_value =0x007A  }, //Merten
+{.manufacture = " MITSUMI                                            ", .manufacture_id_value =0x0112  }, //MITSUMI
+{.manufacture = " MONSTER_CABLE                                      ", .manufacture_id_value =0x007E  }, //Monster Cable
+{.manufacture = " MOTOROLA                                           ", .manufacture_id_value =0x003F  }, //Motorola
+{.manufacture = " MTC_MAINTRONIC_GERMANY                             ", .manufacture_id_value =0x0083  }, //MTC Maintronic Germany
+{.manufacture = " NAPCO_SECURITY_TECHNOLOGIES_INC                    ", .manufacture_id_value =0x0121  }, //Napco Security Technologies, Inc.
+{.manufacture = " NORTHQ                                             ", .manufacture_id_value =0x0096  }, //NorthQ
+{.manufacture = " NOVAR_ELECTRICAL_DEVICES_AND_SYSTEMS_EDS           ", .manufacture_id_value =0x0040  }, //Novar Electrical Devices and Systems (EDS)
+{.manufacture = " OMNIMA_LIMITED                                     ", .manufacture_id_value =0x0119  }, //Omnima Limited
+{.manufacture = " ONSITE_PRO                                         ", .manufacture_id_value =0x014C  }, //OnSite Pro
+{.manufacture = " OPENPEAK_INC                                       ", .manufacture_id_value =0x0041  }, //OpenPeak Inc.
+{.manufacture = " PHILIO_TECHNOLOGY_CORP                             ", .manufacture_id_value =0x013C  }, //Philio Technology Corp
+{.manufacture = " POLYCONTROL                                        ", .manufacture_id_value =0x010E  }, //Poly-control
+{.manufacture = " POWERLYNX                                          ", .manufacture_id_value =0x0016  }, //PowerLynx
+{.manufacture = " PRAGMATIC_CONSULTING_INC                           ", .manufacture_id_value =0x0042  }, //Pragmatic Consulting Inc.
+{.manufacture = " PULSE_TECHNOLOGIES_ASPALIS                         ", .manufacture_id_value =0x005D  }, //Pulse Technologies (Aspalis)
+{.manufacture = " QEES                                               ", .manufacture_id_value =0x0095  }, //Qees
+{.manufacture = " QUBY                                               ", .manufacture_id_value =0x0130  }, //Quby
+{.manufacture = " RADIO_THERMOSTAT_COMPANY_OF_AMERICA_RTC            ", .manufacture_id_value =0x0098  }, //Radio Thermostat Company of America (RTC)
+{.manufacture = " RARITAN                                            ", .manufacture_id_value =0x008E  }, //Raritan
+{.manufacture = " REITZGROUPDE                                       ", .manufacture_id_value =0x0064  }, //Reitz-Group.de
+{.manufacture = " REMOTEC_TECHNOLOGY_LTD                             ", .manufacture_id_value =0x5254  }, //Remotec Technology Ltd
+{.manufacture = " RESIDENTIAL_CONTROL_SYSTEMS_INC_RCS                ", .manufacture_id_value =0x0010  }, //Residential Control Systems, Inc. (RCS)
+{.manufacture = " RIMPORT_LTD                                        ", .manufacture_id_value =0x0147  }, //R-import Ltd.
+{.manufacture = " RS_SCENE_AUTOMATION                                ", .manufacture_id_value =0x0065  }, //RS Scene Automation
+{.manufacture = " SAECO                                              ", .manufacture_id_value =0x0139  }, //Saeco
+{.manufacture = " SAN_SHIH_ELECTRICAL_ENTERPRISE_CO_LTD              ", .manufacture_id_value =0x0093  }, //San Shih Electrical Enterprise Co., Ltd.
+{.manufacture = " SANAV                                              ", .manufacture_id_value =0x012C  }, //SANAV
+{.manufacture = " SCIENTIA_TECHNOLOGIES_INC                          ", .manufacture_id_value =0x001F  }, //Scientia Technologies, Inc.
+{.manufacture = " SECURE_WIRELESS                                    ", .manufacture_id_value =0x011E  }, //Secure Wireless
+{.manufacture = " SELUXIT                                            ", .manufacture_id_value =0x0069  }, //Seluxit
+{.manufacture = " SENMATIC_AS                                        ", .manufacture_id_value =0x0043  }, //Senmatic A/S
+{.manufacture = " SEQUOIA_TECHNOLOGY_LTD                             ", .manufacture_id_value =0x0044  }, //Sequoia Technology LTD
+{.manufacture = " SIGMA_DESIGNS                                      ", .manufacture_id_value =0x0000  }, //Sigma Designs
+{.manufacture = " SINE_WIRELESS                                      ", .manufacture_id_value =0x0045  }, //Sine Wireless
+{.manufacture = " SMART_PRODUCTS_INC                                 ", .manufacture_id_value =0x0046  }, //Smart Products, Inc.
+{.manufacture = " SMK_MANUFACTURING_INC                              ", .manufacture_id_value =0x0102  }, //SMK Manufacturing Inc.
+{.manufacture = " SOMFY                                              ", .manufacture_id_value =0x0047  }, //Somfy
+{.manufacture = " SYLVANIA                                           ", .manufacture_id_value =0x0009  }, //Sylvania
+{.manufacture = " SYSTECH_CORPORATION                                ", .manufacture_id_value =0x0136  }, //Systech Corporation
+{.manufacture = " TEAM_PRECISION_PCL                                 ", .manufacture_id_value =0x0089  }, //Team Precision PCL
+{.manufacture = " TECHNIKU                                           ", .manufacture_id_value =0x000A  }, //Techniku
+{.manufacture = " TELL_IT_ONLINE                                     ", .manufacture_id_value =0x0012  }, //Tell It Online
+{.manufacture = " TELSEY                                             ", .manufacture_id_value =0x0048  }, //Telsey
+{.manufacture = " THERE_CORPORATION                                  ", .manufacture_id_value =0x010C  }, //There Corporation
+{.manufacture = " TKB_HOME                                           ", .manufacture_id_value =0x0118  }, //TKB Home
+{.manufacture = " TKH_GROUP_EMINENT                                  ", .manufacture_id_value =0x011C  }, //TKH Group / Eminent
+{.manufacture = " TRANE_CORPORATION                                  ", .manufacture_id_value =0x008B  }, //Trane Corporation
+{.manufacture = " TRICKLESTAR                                        ", .manufacture_id_value =0x0066  }, //TrickleStar
+{.manufacture = " TRICKLESTAR_LTD_EMPOWER_CONTROLS_LTD               ", .manufacture_id_value =0x006B  }, //Tricklestar Ltd. (former Empower Controls Ltd.)
+{.manufacture = " TRIDIUM                                            ", .manufacture_id_value =0x0055  }, //Tridium
+{.manufacture = " TWISTHINK                                          ", .manufacture_id_value =0x0049  }, //Twisthink
+{.manufacture = " UNIVERSAL_ELECTRONICS_INC                          ", .manufacture_id_value =0x0020  }, //Universal Electronics Inc.
+{.manufacture = " VDA                                                ", .manufacture_id_value =0x010A  }, //VDA
+{.manufacture = " VERO_DUCO                                          ", .manufacture_id_value =0x0080  }, //Vero Duco
+{.manufacture = " VIEWSONIC_CORPORATION                              ", .manufacture_id_value =0x005E  }, //ViewSonic Corporation
+{.manufacture = " VIMAR_CRS                                          ", .manufacture_id_value =0x0007  }, //Vimar CRS
+{.manufacture = " VISION_SECURITY                                    ", .manufacture_id_value =0x0109  }, //Vision Security
+{.manufacture = " VISUALIZE                                          ", .manufacture_id_value =0x004A  }, //Visualize
+{.manufacture = " WATT_STOPPER                                       ", .manufacture_id_value =0x004B  }, //Watt Stopper
+{.manufacture = " WAYNE_DALTON                                       ", .manufacture_id_value =0x0008  }, //Wayne Dalton
+{.manufacture = " WENZHOU_MTLC_ELECTRIC_APPLIANCES_COLTD             ", .manufacture_id_value =0x011A  }, //Wenzhou MTLC Electric Appliances Co.,Ltd.
+{.manufacture = " WIDOM                                              ", .manufacture_id_value =0x0149  }, //wiDom
+{.manufacture = " WILSHINE_HOLDING_CO_LTD                            ", .manufacture_id_value =0x012D  }, //Wilshine Holding Co., Ltd
+{.manufacture = " WINTOP                                             ", .manufacture_id_value =0x0097  }, //Wintop
+{.manufacture = " WOODWARD_LABS                                      ", .manufacture_id_value =0x004C  }, //Woodward Labs
+{.manufacture = " WRAP                                               ", .manufacture_id_value =0x0003  }, //Wrap
+{.manufacture = " WUHAN_NWD_TECHNOLOGY_CO_LTD                        ", .manufacture_id_value =0x012E  }, //Wuhan NWD Technology Co., Ltd.
+{.manufacture = " XANBOO                                             ", .manufacture_id_value =0x004D  }, //Xanboo
+{.manufacture = " ZDATA_LLC                                          ", .manufacture_id_value =0x004E  }, //Zdata, LLC.
+{.manufacture = " ZIPATO                                             ", .manufacture_id_value =0x0131  }, //Zipato
+{.manufacture = " ZONOFF                                             ", .manufacture_id_value =0x0120  }, //Zonoff
+{.manufacture = " ZWAVE_TECHNOLOGIA                                  ", .manufacture_id_value =0x004F  }, //Z-Wave Technologia
+{.manufacture = " ZWAVEME                                            ", .manufacture_id_value =0x0115  }, //Z-Wave.Me
+{.manufacture = " ZYKRONIX                                           ", .manufacture_id_value =0x0021  }, //Zykronix
+{.manufacture = " ZYXEL                                              ", .manufacture_id_value =0x0135  }, //ZyXEL
+
+};
+
 int cmd_more(void* arg);
 
 cmd_handler_t cmd_list[CMD_MAX] = {
     {.cmd_idx = CMD_ADD, .help = "Add a something", .cmd_func = cmd_add},
     {.cmd_idx = CMD_RM, .help = "Remove something", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_LIST, .help = "List all of nodes", .cmd_func = cmd_rm},
+//    {.cmd_idx = CMD_LIST_FULL, .help = "List full of nodes", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_TURN_ON_NODE, .help = "Turn on  node", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_TURN_OFF_NODE, .help = "Turn off  node", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_GET_STATUS_NODE, .help = "Get status node", .cmd_func = cmd_rm},
@@ -109,6 +683,8 @@ cmd_handler_t cmd_list[CMD_MAX] = {
     {.cmd_idx = CMD_V, .help = "Verbose", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_EXIT, .help = "Exit program", .cmd_func = NULL}
 };
+
+
 
 void cmd_print_help()
 {
@@ -183,6 +759,7 @@ int expo(int n)
     }
     return result;
 }
+
 char *fgets_s(char *buffer, size_t buflen, FILE *fp)
 {
     if (fgets(buffer, buflen, fp) != 0)
@@ -229,7 +806,20 @@ void *command_handling_loop(void *unused)
                 {
                             float temperature;
                             printf("TEMPARATURE : \n");
-                                temperature = (uint16_t)(pTxNotify.SensorMultilevelNotify.sensor_Value1 << 8) | pTxNotify.SensorMultilevelNotify.sensor_Value2;
+                                if(((pTxNotify.SensorMultilevelNotify.sensor_PScS & SENSOR_MULTILEVEL_REPORT_LEVEL_SIZE_MASK_V4) == 0x01) &
+                                     (((pTxNotify.SensorMultilevelNotify.sensor_PScS & SENSOR_MULTILEVEL_REPORT_LEVEL_SCALE_MASK_V4)>>3) == 0x00))
+                                    {
+                                         temperature = (uint16_t)(pTxNotify.SensorMultilevelNotify.sensor_Value1);
+                                         printf("\t Celsius (C) : %2.2lf \n",temperature/precicsion);
+                                         printf("\t Fahrenheit (F): %2.2lf\n",
+                                                (temperature/precicsion)*1.8 + 32);
+                                         break;
+                                    }
+                                else if((pTxNotify.SensorMultilevelNotify.sensor_PScS & SENSOR_MULTILEVEL_REPORT_LEVEL_SIZE_MASK_V4) == 0x02)
+                                    {
+                                         temperature = (uint16_t)(pTxNotify.SensorMultilevelNotify.sensor_Value1 << 8) | pTxNotify.SensorMultilevelNotify.sensor_Value2;
+                                    }
+
                                 printf("\t Fahrenheit (F) : %2.2lf \n",temperature/precicsion);
                                 printf("\t Celsius (C) : %2.2lf\n",
                                     ((temperature/precicsion)-32.0)*5.0/9.0);
@@ -240,7 +830,7 @@ void *command_handling_loop(void *unused)
                     float humidity;
                     printf("HUMIDITY: \n");
                     humidity = (uint16_t)pTxNotify.SensorMultilevelNotify.sensor_Value1 * 27.2;  //humidity stadard (28oC: 27.2)
-                    printf("\t Percentage value (%) : %d \n",pTxNotify.SensorMultilevelNotify.sensor_Value1 );
+                    printf("\t Percentage value (%%) : %d \n",pTxNotify.SensorMultilevelNotify.sensor_Value1);
                     printf("\t Absolute humidity (g/m3) : %2.2lf\n",(humidity/precicsion)/100);
                     break;
                 }
@@ -320,20 +910,67 @@ int main(int argc, char *argv[])
                 zwaveSendCommand(pzwParam);
                 if (pzwParam->ret==0)
                 {
-                    mainlog(logUI,"TEST: NodeID[%02X], node type[%02X] has mID:%02X%02X, pID:%02X%02X::%02X%02X",pzwParam->node.node_id,pzwParam->node.node_type,
+                    uint16_t manufacturerID_temp ,productTypeID_temp,productID_temp;
+                    int manu_count,command_class_count,product_id_count,product_type_count;
+                    uint32_t type_pro_temp;
+                    
+            /*       mainlog(logUI,"TEST: NodeID[%02X], node type[%02X] has mID:%02X%02X, pID:%02X%02X::%02X%02X",pzwParam->node.node_id,pzwParam->node.node_type,
                                                                             pzwParam->node.node_manufacture.manufacturerID[0],
                                                                             pzwParam->node.node_manufacture.manufacturerID[1],
                                                                             pzwParam->node.node_manufacture.productTypeID[0],
                                                                             pzwParam->node.node_manufacture.productTypeID[1],
                                                                             pzwParam->node.node_manufacture.productID[0],
-                                                                            pzwParam->node.node_manufacture.productID[1]);
+                                                                            pzwParam->node.node_manufacture.productID[1]);  */
+                    //manufacture_id.manufacture_id_value = pzwParam->node.node_manufacture.manufacturerID[0] ;
+                    mainlog(logUI,"TEST: NodeID[%02X], node type[%02X]", pzwParam->node.node_id,pzwParam->node.node_type ) ;
+                    manufacturerID_temp  = (pzwParam->node.node_manufacture.manufacturerID[0] << 8)
+                                                               | pzwParam->node.node_manufacture.manufacturerID[1];
 
-                    printf("Command class support");
+                    productTypeID_temp = (pzwParam->node.node_manufacture.productTypeID[0] << 8 ) 
+                                                                | pzwParam->node.node_manufacture.productTypeID[1];
+
+                    productID_temp = ( pzwParam->node.node_manufacture.productID[0] << 8 ) 
+                                                                | pzwParam->node.node_manufacture.productID[1];
+
+                    type_pro_temp = (uint32_t)(productTypeID_temp << 16) | productID_temp;
+                    for(manu_count =0;manu_count<manu_max;manu_count++)
+                    {
+                        if(manufacturerID_temp == manu_id[manu_count].manufacture_id_value)
+                        {
+                            printf("Manufacturer: %s \n",manu_id[manu_count].manufacture);
+                        }
+                    }
+                    //printf("%X  ",type_pro_temp);
+                    for(product_type_count =0;product_type_count < manu_pType_max;product_type_count++)
+                    {
+                        
+                        if(type_pro_temp == product_type_id_t[product_type_count].product_type_id_number)
+                        {
+                            //printf("%02X",productTypeID_temp);
+                            printf("Product type: %s \n",product_type_id_t[product_type_count].product_type_name);
+                        }
+                    }
+                    for(product_id_count = 0;product_id_count < manu_pID_max;product_id_count++)
+                    {
+                        if( productID_temp == product_id_t[product_id_count].product_id_number )
+                        {
+                            printf("product_id_name: %s \n",product_id_t[product_id_count].product_id_name);
+                        }
+                    } 
+
+                    printf("\tCommand class support: \n");
                     for (i=0;i<pzwParam->node.node_capability.noCapability;i++)
                     {
-                        printf(":%02X",pzwParam->node.node_capability.aCapability[i]);
+                       // printf(":%02X",pzwParam->node.node_capability.aCapability[i]);
+                        for(command_class_count = 0;command_class_count<manu_max;command_class_count++)
+                        {
+                            if(pzwParam->node.node_capability.aCapability[i] == class_suport_t[command_class_count].class_support_number)
+                            {
+                                printf("\t\t%s\n",class_suport_t[command_class_count].command_class_suport);
+                            }
+                        }
                     }
-                    printf("\n");
+                    //printf("\n");
                 }
                 break;
             case CMD_RM:
@@ -349,10 +986,11 @@ int main(int argc, char *argv[])
                 zwaveSendCommand(pzwParam);
                 for (i=0;i<pzwParam->param1;i++)
                 {
-                    mainlog(logUI,"TEST: NodeID=0x%02X, NodeType=0x%02X",pzwParam->node_list[i].node_id,pzwParam->node_list[i].node_type);
+                    mainlog(logUI,"TEST: NodeID=0x%02X, NodeType=0x%02X",pzwParam->node_list[i].node_id,pzwParam->node_list[i].node_type);   
                 }
-                
+
                 break;
+    
             case CMD_TURN_ON_NODE:
                 printf("Please provide the NodeID: ");
                 if (scanf("%X",&NodeID)==1)
@@ -901,19 +1539,31 @@ int main(int argc, char *argv[])
                             {
                                 float temperature;
                                 printf("TEMPARATURE ! \n");
-                            
-                                    temperature = (uint16_t)((pzwParam->data_out.cmd[4]<< 8) | pzwParam->data_out.cmd[5]);
+                                    if((pzwParam->data_out.cmd[3]& 0x07) == 0x01)
+                                    {
+                                         temperature = (uint16_t)pzwParam->data_out.cmd[4];
+                                    }
+                                    else if((pzwParam->data_out.cmd[3]& 0x07) == 0x02)
+                                    {
+                                         temperature = (uint16_t)((pzwParam->data_out.cmd[4]<< 8) | pzwParam->data_out.cmd[5]);
+                                    }
+                                    else if((pzwParam->data_out.cmd[3]& 0x07) == 0x04)
+                                    {
+                                         temperature = (uint16_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5] <<16) 
+                                                                        | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);  
+                                    }
                                     printf("Fahrenheit (F) : %2.2lf \n",temperature/precicsion);
                                     printf("Celsius (C) : %2.2lf\n",
                                         ((temperature/precicsion)-32.0)*5.0/9.0);
                                     break;
+
                             }
                             case SENSOR_MULTILEVEL_REPORT_RELATIVE_HUMIDITY_VERSION_2_V4:
                             {
                                 float humidity_tmp;
                                 printf("HUMIDITY ! \n");
                                     humidity_tmp = (uint16_t)pzwParam->data_out.cmd[4] * 27.2 ;
-                                    printf("Percentage value (%) : %ld\n",pzwParam->data_out.cmd[4]);
+                                    printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[4]);
                                     printf("Absolute humidity (g/cm3) : %2.2lf\n",
                                     (humidity_tmp/precicsion)/100);
                                 break;
@@ -991,7 +1641,7 @@ int main(int argc, char *argv[])
                                     float humidity_tmp;
                                     printf("HUMIDITY ! \n");
                                         humidity_tmp = (uint16_t)pzwParam->data_out.cmd[6] * 27.2 ;
-                                        printf("Percentage value (%) : %ld\n",pzwParam->data_out.cmd[6]);
+                                        printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[6]);
                                         printf("Absolute humidity (g/cm3) : %2.2lf\n",
                                         (humidity_tmp/precicsion)/100);
                                     break;
@@ -1033,7 +1683,7 @@ int main(int argc, char *argv[])
                             delta_time = (uint16_t)((pzwParam->data_out.cmd[8]<< 8) | pzwParam->data_out.cmd[9]);
 
                             printf("Electric Meter (W) : %2.2lf \n",watt_measurement/precicsion);
-                            printf("Delta time (s): %ld\n", delta_time);
+                            printf("Delta time (s): %d\n", delta_time);
                             printf("Power consumption(Wh): %2.5lf \n",(watt_measurement/precicsion)*delta_time /3600 );
                             printf("BTu/h (btu/h) : %2.2lf\n",
                                 ((watt_measurement/precicsion)/1000)*1.36);
