@@ -10,7 +10,7 @@
 #include "SerialAPI/ZW_SerialAPI.h"
 #define manu_max 161
 #define manu_pID_max 179
-#define manu_pType_max 13
+#define manu_pType_max 14
 #define manu_class_suport_max 158
 enum COMMAND_IDX {
     CMD_ADD = 0,
@@ -102,6 +102,7 @@ Manu_product_type_t product_type_id_t[manu_pType_max] = {
 {.product_type_name = " Z-wave Door/Windown Sensor                                                               ",.product_type_id_number = 0x0002001D},
 {.product_type_name = " Z-wave Sensor Multilevel 6                                                               ",.product_type_id_number = 0x01020064}, /**/
 {.product_type_name = " Z-wave Smart Outlet                                                                      ",.product_type_id_number = 0x49523031},/**/
+{.product_type_name = " Z-wave Smart Dimmer                                                                      ",.product_type_id_number = 0x49443031},/**/
 {.product_type_name = " Z-wave Heavy Duty Smart Switch                                                           ",.product_type_id_number = 0x0103004E},/**/
 {.product_type_name = " Z-wave Led                                                                               ",.product_type_id_number = 0x00040001},/**/
 {.product_type_name = " Z-wave Outlet Lamp Module                                                                ",.product_type_id_number = 0x44503030},/**/
@@ -111,6 +112,7 @@ Manu_product_type_t product_type_id_t[manu_pType_max] = {
 {.product_type_name = " Z-wave Aeotec Smartdimmer                                                                ",.product_type_id_number = 0x00030019},/**/
 {.product_type_name = " Z-wave Door/Windown Fibaro Systems Sensor                                                ",.product_type_id_number = 0x07002000},/**/
 {.product_type_name = " Z-wave Door/Windown Sensor (DWZ)                                                         ",.product_type_id_number = 0x00010002},/**/
+{.product_type_name = " Z-wave Smart Switch                                                                      ",.product_type_id_number = 0x4F503031},/**/
 
 
 };
@@ -207,7 +209,7 @@ Manu_product_id_t product_id_t[manu_pID_max]={
 {.product_id_name = "MFG_ID_INTERNET_DOM                                       ", .product_id_number =0x0013  }, //Internet Dom
 {.product_id_name = "MFG_ID_IR_SEC_SAFETY                                      ", .product_id_number =0x003B  }, //IR Sec. & Safety
 {.product_id_name = "MFG_ID_IWATSU                                             ", .product_id_number =0x0123  }, //IWATSU
-{.product_id_name = "MFG_ID_JASCO_PRODUCTS                                     ", .product_id_number =0x0063  }, //Jasco Products
+{.product_id_name = "MFG_ID_JASCO_PRODUCTS                                     ", .product_id_number =0x3031  }, //Jasco Products
 {.product_id_name = "MFG_ID_KAMSTRUP_AS                                        ", .product_id_number =0x0091  }, //Kamstrup A/S
 {.product_id_name = "MFG_ID_LAGOTEK_CORPORATION                                ", .product_id_number =0x0051  }, //Lagotek Corporation
 {.product_id_name = "MFG_ID_LEVITON                                            ", .product_id_number =0x001D  }, //Leviton
@@ -914,13 +916,13 @@ int main(int argc, char *argv[])
                     int manu_count,command_class_count,product_id_count,product_type_count;
                     uint32_t type_pro_temp;
                     
-            /*       mainlog(logUI,"TEST: NodeID[%02X], node type[%02X] has mID:%02X%02X, pID:%02X%02X::%02X%02X",pzwParam->node.node_id,pzwParam->node.node_type,
+             /*       mainlog(logUI,"TEST: NodeID[%02X], node type[%02X] has mID:%02X%02X, pID:%02X%02X::%02X%02X",pzwParam->node.node_id,pzwParam->node.node_type,
                                                                             pzwParam->node.node_manufacture.manufacturerID[0],
                                                                             pzwParam->node.node_manufacture.manufacturerID[1],
                                                                             pzwParam->node.node_manufacture.productTypeID[0],
                                                                             pzwParam->node.node_manufacture.productTypeID[1],
                                                                             pzwParam->node.node_manufacture.productID[0],
-                                                                            pzwParam->node.node_manufacture.productID[1]);  */
+                                                                            pzwParam->node.node_manufacture.productID[1]); */
                     //manufacture_id.manufacture_id_value = pzwParam->node.node_manufacture.manufacturerID[0] ;
                     mainlog(logUI,"TEST: NodeID[%02X], node type[%02X]", pzwParam->node.node_id,pzwParam->node.node_type ) ;
                     manufacturerID_temp  = (pzwParam->node.node_manufacture.manufacturerID[0] << 8)
