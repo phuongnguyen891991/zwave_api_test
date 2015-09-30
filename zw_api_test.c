@@ -10,7 +10,7 @@
 #include "SerialAPI/ZW_SerialAPI.h"
 #define manu_max 161
 #define manu_pID_max 179
-#define manu_pType_max 14
+#define manu_pType_max 15
 #define manu_class_suport_max 158
 enum COMMAND_IDX {
     CMD_ADD = 0,
@@ -42,11 +42,12 @@ enum COMMAND_IDX {
     CMD_DOOR_NONCE_GET,
     CMD_DOOR_OPEN,
     CMD_DOOR_CLOSE,
-    CMD_GET_BATTERY,
-    CMD_SENSOR_MULTILEVEL_GET,
-    CMD_SENSOR_HEAVY_DUTY_SMART_SWITCH,
-    CMD_SET_ALAM_REPORT_ONOFF_BULBS,
+//    CMD_GET_BATTERY,
+//   CMD_SENSOR_MULTILEVEL_GET,
+//   CMD_SENSOR_HEAVY_DUTY_SMART_SWITCH,
+//   CMD_SET_ALAM_REPORT_ONOFF_BULBS,
     CMD_SET_CONFIGURATION_NODE,
+    CMD_FEATURE_OPTION_NODE,
     CMD_V,
     CMD_EXIT,
     CMD_MAX
@@ -74,6 +75,13 @@ typedef struct Manufacture_ID{
     char  manufacture[256];
 
 }Manufacture_id_value_t;
+
+
+typedef struct Feature_option{
+    uint16_t feature_id;
+    uint16_t feature_num;
+    Manu_class_suport_t feature_class[manu_max];
+}feature_option_t;
 
 typedef struct cmd_handler_s{
     enum COMMAND_IDX cmd_idx;
@@ -302,164 +310,167 @@ Manu_product_id_t product_id_t[manu_pID_max]={
 };
 
 Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
-{.command_class_suport = "COMMAND_CLASS_ALARM                                                             ",.class_support_number = 0x71},
-{.command_class_suport = "COMMAND_CLASS_ALARM_V2                                                          ",.class_support_number = 0x71},
-{.command_class_suport = "COMMAND_CLASS_NOTIFICATION_V3                                                   ",.class_support_number = 0x71},
-{.command_class_suport = "COMMAND_CLASS_NOTIFICATION_V4                                                   ",.class_support_number = 0x71},
-{.command_class_suport = "COMMAND_CLASS_APPLICATION_STATUS                                                ",.class_support_number = 0x22},
-{.command_class_suport = "COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION                                 ",.class_support_number = 0x9B},
-{.command_class_suport = "COMMAND_CLASS_ASSOCIATION                                                       ",.class_support_number = 0x85},
-{.command_class_suport = "COMMAND_CLASS_ASSOCIATION_V2                                                    ",.class_support_number = 0x85},
-{.command_class_suport = "COMMAND_CLASS_AV_CONTENT_DIRECTORY_MD                                           ",.class_support_number = 0x95},
-{.command_class_suport = "COMMAND_CLASS_AV_CONTENT_SEARCH_MD                                              ",.class_support_number = 0x97},
-{.command_class_suport = "COMMAND_CLASS_AV_RENDERER_STATUS                                                ",.class_support_number = 0x96},
-{.command_class_suport = "COMMAND_CLASS_AV_TAGGING_MD                                                     ",.class_support_number = 0x99},
-{.command_class_suport = "COMMAND_CLASS_BASIC_TARIFF_INFO                                                 ",.class_support_number = 0x36},
-{.command_class_suport = "COMMAND_CLASS_BASIC_WINDOW_COVERING                                             ",.class_support_number = 0x50},
-{.command_class_suport = "COMMAND_CLASS_BASIC                                                             ",.class_support_number = 0x20},
-{.command_class_suport = "COMMAND_CLASS_BATTERY                                                           ",.class_support_number = 0x80},
-{.command_class_suport = "COMMAND_CLASS_CHIMNEY_FAN                                                       ",.class_support_number = 0x2A},
-{.command_class_suport = "COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE                                          ",.class_support_number = 0x46},
-{.command_class_suport = "COMMAND_CLASS_CLOCK                                                             ",.class_support_number = 0x81},
-{.command_class_suport = "COMMAND_CLASS_CONFIGURATION                                                     ",.class_support_number = 0x70},
-{.command_class_suport = "COMMAND_CLASS_CONFIGURATION_V2                                                  ",.class_support_number = 0x70},
-{.command_class_suport = "COMMAND_CLASS_CONTROLLER_REPLICATION                                            ",.class_support_number = 0x21},
-{.command_class_suport = "COMMAND_CLASS_CRC_16_ENCAP                                                      ",.class_support_number = 0x56},
-{.command_class_suport = "COMMAND_CLASS_DCP_CONFIG                                                        ",.class_support_number = 0x3A},
-{.command_class_suport = "COMMAND_CLASS_DCP_MONITOR                                                       ",.class_support_number = 0x3B},
-{.command_class_suport = "COMMAND_CLASS_DOOR_LOCK_LOGGING                                                 ",.class_support_number = 0x4C},
-{.command_class_suport = "COMMAND_CLASS_DOOR_LOCK                                                         ",.class_support_number = 0x62},
-{.command_class_suport = "COMMAND_CLASS_DOOR_LOCK_V2                                                      ",.class_support_number = 0x62},
-{.command_class_suport = "COMMAND_CLASS_ENERGY_PRODUCTION                                                 ",.class_support_number = 0x90},
-{.command_class_suport = "COMMAND_CLASS_FIRMWARE_UPDATE_MD                                                ",.class_support_number = 0x7A},
-{.command_class_suport = "COMMAND_CLASS_FIRMWARE_UPDATE_MD_V2                                             ",.class_support_number = 0x7A},
-{.command_class_suport = "COMMAND_CLASS_GEOGRAPHIC_LOCATION                                               ",.class_support_number = 0x8C},
-{.command_class_suport = "COMMAND_CLASS_GROUPING_NAME                                                     ",.class_support_number = 0x7B},
-{.command_class_suport = "COMMAND_CLASS_HAIL                                                              ",.class_support_number = 0x82},
-{.command_class_suport = "COMMAND_CLASS_HRV_CONTROL                                                       ",.class_support_number = 0x39},
-{.command_class_suport = "COMMAND_CLASS_HRV_STATUS                                                        ",.class_support_number = 0x37},
-{.command_class_suport = "COMMAND_CLASS_INDICATOR                                                         ",.class_support_number = 0x87},
-{.command_class_suport = "COMMAND_CLASS_IP_CONFIGURATION                                                  ",.class_support_number = 0x9A},
-{.command_class_suport = "COMMAND_CLASS_LANGUAGE                                                          ",.class_support_number = 0x89},
-{.command_class_suport = "COMMAND_CLASS_LOCK                                                              ",.class_support_number = 0x76},
-{.command_class_suport = "COMMAND_CLASS_MANUFACTURER_PROPRIETARY                                          ",.class_support_number = 0x91},
-{.command_class_suport = "COMMAND_CLASS_MANUFACTURER_SPECIFIC                                             ",.class_support_number = 0x72},
-{.command_class_suport = "COMMAND_CLASS_MANUFACTURER_SPECIFIC_V2                                          ",.class_support_number = 0x72},
-{.command_class_suport = "COMMAND_CLASS_MARK                                                              ",.class_support_number = 0xEF},
-{.command_class_suport = "COMMAND_CLASS_METER_PULSE                                                       ",.class_support_number = 0x35},
-{.command_class_suport = "COMMAND_CLASS_METER_TBL_CONFIG                                                  ",.class_support_number = 0x3C},
-{.command_class_suport = "COMMAND_CLASS_METER_TBL_MONITOR                                                 ",.class_support_number = 0x3D},
-{.command_class_suport = "COMMAND_CLASS_METER_TBL_MONITOR_V2                                              ",.class_support_number = 0x3D},
-{.command_class_suport = "COMMAND_CLASS_METER_TBL_PUSH                                                    ",.class_support_number = 0x3E},
-{.command_class_suport = "COMMAND_CLASS_METER                                                             ",.class_support_number = 0x32},
-{.command_class_suport = "COMMAND_CLASS_METER_V2                                                          ",.class_support_number = 0x32},
-{.command_class_suport = "COMMAND_CLASS_METER_V3                                                          ",.class_support_number = 0x32},
-{.command_class_suport = "COMMAND_CLASS_METER_V4                                                          ",.class_support_number = 0x32},
-{.command_class_suport = "COMMAND_CLASS_MTP_WINDOW_COVERING                                               ",.class_support_number = 0x51},
-{.command_class_suport = "COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION_V2                                      ",.class_support_number = 0x8E},
-{.command_class_suport = "COMMAND_CLASS_MULTI_CHANNEL_V2                                                  ",.class_support_number = 0x60},
-{.command_class_suport = "COMMAND_CLASS_MULTI_CHANNEL_V3                                                  ",.class_support_number = 0x60},
-{.command_class_suport = "COMMAND_CLASS_MULTI_CMD                                                         ",.class_support_number = 0x8F},
-{.command_class_suport = "COMMAND_CLASS_MULTI_INSTANCE_ASSOCIATION                                        ",.class_support_number = 0x8E}, /*Discontinued*/
-{.command_class_suport = "COMMAND_CLASS_MULTI_INSTANCE                                                    ",.class_support_number = 0x60}, /*Discontinued*/
-{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_PROXY                                          ",.class_support_number = 0x52},
-{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_BASIC                                          ",.class_support_number = 0x4D},
-{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_INCLUSION                                      ",.class_support_number = 0x34},
-{.command_class_suport = "COMMAND_CLASS_NO_OPERATION                                                      ",.class_support_number = 0x00},
-{.command_class_suport = "COMMAND_CLASS_NODE_NAMING                                                       ",.class_support_number = 0x77},
-{.command_class_suport = "COMMAND_CLASS_NON_INTEROPERABLE                                                 ",.class_support_number = 0xF0},
-{.command_class_suport = "COMMAND_CLASS_POWERLEVEL                                                        ",.class_support_number = 0x73},
-{.command_class_suport = "COMMAND_CLASS_PREPAYMENT_ENCAPSULATION                                          ",.class_support_number = 0x41},
-{.command_class_suport = "COMMAND_CLASS_PREPAYMENT                                                        ",.class_support_number = 0x3F},
-{.command_class_suport = "COMMAND_CLASS_PROPRIETARY                                                       ",.class_support_number = 0x88},
-{.command_class_suport = "COMMAND_CLASS_PROTECTION                                                        ",.class_support_number = 0x75},
-{.command_class_suport = "COMMAND_CLASS_PROTECTION_V2                                                     ",.class_support_number = 0x75},
-{.command_class_suport = "COMMAND_CLASS_RATE_TBL_CONFIG                                                   ",.class_support_number = 0x48},
-{.command_class_suport = "COMMAND_CLASS_RATE_TBL_MONITOR                                                  ",.class_support_number = 0x49},
-{.command_class_suport = "COMMAND_CLASS_REMOTE_ASSOCIATION_ACTIVATE                                       ",.class_support_number = 0x7C},
-{.command_class_suport = "COMMAND_CLASS_REMOTE_ASSOCIATION                                                ",.class_support_number = 0x7D},
-{.command_class_suport = "COMMAND_CLASS_SCENE_ACTIVATION                                                  ",.class_support_number = 0x2B},
-{.command_class_suport = "COMMAND_CLASS_SCENE_ACTUATOR_CONF                                               ",.class_support_number = 0x2C},
-{.command_class_suport = "COMMAND_CLASS_SCENE_CONTROLLER_CONF                                             ",.class_support_number = 0x2D},
-{.command_class_suport = "COMMAND_CLASS_SCHEDULE_ENTRY_LOCK                                               ",.class_support_number = 0x4E},
-{.command_class_suport = "COMMAND_CLASS_SCHEDULE_ENTRY_LOCK_V2                                            ",.class_support_number = 0x4E},
-{.command_class_suport = "COMMAND_CLASS_SCHEDULE_ENTRY_LOCK_V3                                            ",.class_support_number = 0x4E},
-{.command_class_suport = "COMMAND_CLASS_SCREEN_ATTRIBUTES                                                 ",.class_support_number = 0x93},
-{.command_class_suport = "COMMAND_CLASS_SCREEN_ATTRIBUTES_V2                                              ",.class_support_number = 0x93},
-{.command_class_suport = "COMMAND_CLASS_SCREEN_MD                                                         ",.class_support_number = 0x92},
-{.command_class_suport = "COMMAND_CLASS_SCREEN_MD_V2                                                      ",.class_support_number = 0x92},
-{.command_class_suport = "COMMAND_CLASS_SECURITY_PANEL_MODE                                               ",.class_support_number = 0x24},
-{.command_class_suport = "COMMAND_CLASS_SECURITY_PANEL_ZONE_SENSOR                                        ",.class_support_number = 0x2F},
-{.command_class_suport = "COMMAND_CLASS_SECURITY_PANEL_ZONE                                               ",.class_support_number = 0x2E},
-{.command_class_suport = "COMMAND_CLASS_SECURITY                                                          ",.class_support_number = 0x98},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_ALARM                                                      ",.class_support_number = 0x9C}, /*SDS10963-4 The Sensor Alarm {.command_class_suport = "COMMAND class can be used to realize Sensor Alarms.*/
-{.command_class_suport = "COMMAND_CLASS_SENSOR_BINARY                                                     ",.class_support_number = 0x30},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_BINARY_V2                                                  ",.class_support_number = 0x30},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_CONFIGURATION                                              ",.class_support_number = 0x9E}, /*This {.command_class_suport = "COMMAND class adds the possibility for sensors to act on either a measured value or on a*/
-{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL                                                 ",.class_support_number = 0x31},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V2                                              ",.class_support_number = 0x31},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V3                                              ",.class_support_number = 0x31},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V4                                              ",.class_support_number = 0x31},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V5                                              ",.class_support_number = 0x31},
-{.command_class_suport = "COMMAND_CLASS_SENSOR_MULTILEVEL_V6                                              ",.class_support_number = 0x31},
-{.command_class_suport = "COMMAND_CLASS_SILENCE_ALARM                                                     ",.class_support_number = 0x9D}, /*SDS10963-4 The Alarm Silence {.command_class_suport = "COMMAND class can be used to nuisance silence to temporarily disable the sounding*/
-{.command_class_suport = "COMMAND_CLASS_SIMPLE_AV_CONTROL                                                 ",.class_support_number = 0x94},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_ALL                                                        ",.class_support_number = 0x27},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_BINARY                                                     ",.class_support_number = 0x25},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_MULTILEVEL                                                 ",.class_support_number = 0x26},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_MULTILEVEL_V2                                              ",.class_support_number = 0x26},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_MULTILEVEL_V3                                              ",.class_support_number = 0x26},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_TOGGLE_BINARY                                              ",.class_support_number = 0x28},
-{.command_class_suport = "COMMAND_CLASS_SWITCH_TOGGLE_MULTILEVEL                                          ",.class_support_number = 0x29},
-{.command_class_suport = "COMMAND_CLASS_TARIFF_CONFIG                                                     ",.class_support_number = 0x4A},
-{.command_class_suport = "COMMAND_CLASS_TARIFF_TBL_MONITOR                                                ",.class_support_number = 0x4B},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE                                               ",.class_support_number = 0x44},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE_V2                                            ",.class_support_number = 0x44},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE_V3                                            ",.class_support_number = 0x44},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_MODE_V4                                            ",.class_support_number = 0x44},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_FAN_STATE                                              ",.class_support_number = 0x45},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_HEATING                                                ",.class_support_number = 0x38},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_MODE                                                   ",.class_support_number = 0x40},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_MODE_V2                                                ",.class_support_number = 0x40},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_MODE_V3                                                ",.class_support_number = 0x40},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_OPERATING_STATE                                        ",.class_support_number = 0x42},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_OPERATING_STATE_V2                                     ",.class_support_number = 0x42},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETBACK                                                ",.class_support_number = 0x47},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETPOINT                                               ",.class_support_number = 0x43},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETPOINT_V2                                            ",.class_support_number = 0x43},
-{.command_class_suport = "COMMAND_CLASS_THERMOSTAT_SETPOINT_V3                                            ",.class_support_number = 0x43},
-{.command_class_suport = "COMMAND_CLASS_TIME_PARAMETERS                                                   ",.class_support_number = 0x8B},
-{.command_class_suport = "COMMAND_CLASS_TIME                                                              ",.class_support_number = 0x8A},
-{.command_class_suport = "COMMAND_CLASS_TIME_V2                                                           ",.class_support_number = 0x8A},
-{.command_class_suport = "COMMAND_CLASS_TRANSPORT_SERVICE                                                 ",.class_support_number = 0x55},
-{.command_class_suport = "COMMAND_CLASS_TRANSPORT_SERVICE_V2                                              ",.class_support_number = 0x55},
-{.command_class_suport = "COMMAND_CLASS_USER_CODE                                                         ",.class_support_number = 0x63},
-{.command_class_suport = "COMMAND_CLASS_VERSION                                                           ",.class_support_number = 0x86},
-{.command_class_suport = "COMMAND_CLASS_VERSION_V2                                                        ",.class_support_number = 0x86},
-{.command_class_suport = "COMMAND_CLASS_WAKE_UP                                                           ",.class_support_number = 0x84},
-{.command_class_suport = "COMMAND_CLASS_WAKE_UP_V2                                                        ",.class_support_number = 0x84},
-{.command_class_suport = "COMMAND_CLASS_ZIP_6LOWPAN                                                       ",.class_support_number = 0x4F},
-{.command_class_suport = "COMMAND_CLASS_ZIP                                                               ",.class_support_number = 0x23},
-{.command_class_suport = "COMMAND_CLASS_ZIP_V2                                                            ",.class_support_number = 0x23},
-{.command_class_suport = "COMMAND_CLASS_APPLICATION_CAPABILITY                                            ",.class_support_number = 0x57},
-{.command_class_suport = "COMMAND_CLASS_COLOR_CONTROL                                                     ",.class_support_number = 0x33},
-{.command_class_suport = "COMMAND_CLASS_COLOR_CONTROL_V2                                                  ",.class_support_number = 0x33},
-{.command_class_suport = "COMMAND_CLASS_SCHEDULE                                                          ",.class_support_number = 0x53},
-{.command_class_suport = "COMMAND_CLASS_NETWORK_MANAGEMENT_PRIMARY                                        ",.class_support_number = 0x54},
-{.command_class_suport = "COMMAND_CLASS_ZIP_ND                                                            ",.class_support_number = 0x58},
-{.command_class_suport = "COMMAND_CLASS_ASSOCIATION_GRP_INFO                                              ",.class_support_number = 0x59},
-{.command_class_suport = "COMMAND_CLASS_DEVICE_RESET_LOCALLY                                              ",.class_support_number = 0x5A},
-{.command_class_suport = "COMMAND_CLASS_CENTRAL_SCENE                                                     ",.class_support_number = 0x5B},
-{.command_class_suport = "COMMAND_CLASS_IP_ASSOCIATION                                                    ",.class_support_number = 0x5C},
-{.command_class_suport = "COMMAND_CLASS_ANTITHEFT                                                         ",.class_support_number = 0x5D},
-{.command_class_suport = "COMMAND_CLASS_ANTITHEFT_V2                                                      ",.class_support_number = 0x5D},
-{.command_class_suport = "COMMAND_CLASS_ZWAVEPLUS_INFO                                                    ",.class_support_number = 0x5E}, /*SDS11907-3*/
-{.command_class_suport = "COMMAND_CLASS_ZWAVEPLUS_INFO_V2                                                 ",.class_support_number = 0x5E}, /*SDS11907-3*/
-{.command_class_suport = "COMMAND_CLASS_ZIP_GATEWAY                                                       ",.class_support_number = 0x5F},
-{.command_class_suport = "COMMAND_CLASS_ZIP_PORTAL                                                        ",.class_support_number = 0x61},
-{.command_class_suport = "COMMAND_CLASS_APPLIANCE                                                         ",.class_support_number = 0x64},
-{.command_class_suport = "COMMAND_CLASS_DMX                                                               ",.class_support_number = 0x65},
-{.command_class_suport = "COMMAND_CLASS_BARRIER_OPERATOR                                                  ",.class_support_number = 0x66},
+
+
+{.command_class_suport =  " ALARM                                                             ",.class_support_number = 0x71},
+//{.command_class_suport =  " ALARM_V2                                                          ",.class_support_number = 0x71},
+//{.command_class_suport =  " NOTIFICATION_V3                                                   ",.class_support_number = 0x71},
+//{.command_class_suport =  " NOTIFICATION_V4                                                   ",.class_support_number = 0x71},
+{.command_class_suport =  " APPLICATION_STATUS                                                ",.class_support_number = 0x22},
+{.command_class_suport =  " ASSOCIATION_COMMAND_CONFIGURATION                                 ",.class_support_number = 0x9B},
+{.command_class_suport =  " ASSOCIATION                                                       ",.class_support_number = 0x85},
+//{.command_class_suport =  " ASSOCIATION_V2                                                    ",.class_support_number = 0x85},
+{.command_class_suport =  " AV_CONTENT_DIRECTORY_MD                                           ",.class_support_number = 0x95},
+{.command_class_suport =  " AV_CONTENT_SEARCH_MD                                              ",.class_support_number = 0x97},
+{.command_class_suport =  " AV_RENDERER_STATUS                                                ",.class_support_number = 0x96},
+{.command_class_suport =  " AV_TAGGING_MD                                                     ",.class_support_number = 0x99},
+{.command_class_suport =  " BASIC_TARIFF_INFO                                                 ",.class_support_number = 0x36},
+{.command_class_suport =  " BASIC_WINDOW_COVERING                                             ",.class_support_number = 0x50},
+{.command_class_suport =  " BASIC                                                             ",.class_support_number = 0x20},
+{.command_class_suport =  " BATTERY                                                           ",.class_support_number = 0x80},
+{.command_class_suport =  " CHIMNEY_FAN                                                       ",.class_support_number = 0x2A},
+{.command_class_suport =  " CLIMATE_CONTROL_SCHEDULE                                          ",.class_support_number = 0x46},
+{.command_class_suport =  " CLOCK                                                             ",.class_support_number = 0x81},
+{.command_class_suport =  " CONFIGURATION                                                     ",.class_support_number = 0x70},
+{.command_class_suport =  " CONFIGURATION_V2                                                  ",.class_support_number = 0x70},
+{.command_class_suport =  " CONTROLLER_REPLICATION                                            ",.class_support_number = 0x21},
+{.command_class_suport =  " CRC_16_ENCAP                                                      ",.class_support_number = 0x56},
+{.command_class_suport =  " DCP_CONFIG                                                        ",.class_support_number = 0x3A},
+{.command_class_suport =  " DCP_MONITOR                                                       ",.class_support_number = 0x3B},
+{.command_class_suport =  " DOOR_LOCK_LOGGING                                                 ",.class_support_number = 0x4C},
+{.command_class_suport =  " DOOR_LOCK                                                         ",.class_support_number = 0x62},
+{.command_class_suport =  " DOOR_LOCK_V2                                                      ",.class_support_number = 0x62},
+{.command_class_suport =  " ENERGY_PRODUCTION                                                 ",.class_support_number = 0x90},
+{.command_class_suport =  " FIRMWARE_UPDATE_MD                                                ",.class_support_number = 0x7A},
+//{.command_class_suport =  " FIRMWARE_UPDATE_MD_V2                                             ",.class_support_number = 0x7A},
+{.command_class_suport =  " GEOGRAPHIC_LOCATION                                               ",.class_support_number = 0x8C},
+{.command_class_suport =  " GROUPING_NAME                                                     ",.class_support_number = 0x7B},
+{.command_class_suport =  " HAIL                                                              ",.class_support_number = 0x82},
+{.command_class_suport =  " HRV_CONTROL                                                       ",.class_support_number = 0x39},
+{.command_class_suport =  " HRV_STATUS                                                        ",.class_support_number = 0x37},
+{.command_class_suport =  " INDICATOR                                                         ",.class_support_number = 0x87},
+{.command_class_suport =  " IP_CONFIGURATION                                                  ",.class_support_number = 0x9A},
+{.command_class_suport =  " LANGUAGE                                                          ",.class_support_number = 0x89},
+{.command_class_suport =  " LOCK                                                              ",.class_support_number = 0x76},
+{.command_class_suport =  " MANUFACTURER_PROPRIETARY                                          ",.class_support_number = 0x91},
+{.command_class_suport =  " MANUFACTURER_SPECIFIC                                             ",.class_support_number = 0x72},
+{.command_class_suport =  " MANUFACTURER_SPECIFIC_V2                                          ",.class_support_number = 0x72},
+{.command_class_suport =  " MARK                                                              ",.class_support_number = 0xEF},
+{.command_class_suport =  " METER_PULSE                                                       ",.class_support_number = 0x35},
+{.command_class_suport =  " METER_TBL_CONFIG                                                  ",.class_support_number = 0x3C},
+{.command_class_suport =  " METER_TBL_MONITOR                                                 ",.class_support_number = 0x3D},
+//{.command_class_suport =  " METER_TBL_MONITOR_V2                                              ",.class_support_number = 0x3D},
+{.command_class_suport =  " METER_TBL_PUSH                                                    ",.class_support_number = 0x3E},
+{.command_class_suport =  " METER                                                             ",.class_support_number = 0x32},
+//{.command_class_suport =  " METER_V2                                                          ",.class_support_number = 0x32},
+//{.command_class_suport =  " METER_V3                                                          ",.class_support_number = 0x32},
+//{.command_class_suport =  " METER_V4                                                          ",.class_support_number = 0x32},
+{.command_class_suport =  " MTP_WINDOW_COVERING                                               ",.class_support_number = 0x51},
+{.command_class_suport =  " MULTI_CHANNEL_ASSOCIATION_V2                                      ",.class_support_number = 0x8E},
+{.command_class_suport =  " MULTI_CHANNEL_V2                                                  ",.class_support_number = 0x60},
+{.command_class_suport =  " MULTI_CHANNEL_V3                                                  ",.class_support_number = 0x60},
+{.command_class_suport =  " MULTI_CMD                                                         ",.class_support_number = 0x8F},
+{.command_class_suport =  " MULTI_INSTANCE_ASSOCIATION                                        ",.class_support_number = 0x8E}, /*Discontinued*/
+{.command_class_suport =  " MULTI_INSTANCE                                                    ",.class_support_number = 0x60}, /*Discontinued*/
+{.command_class_suport =  " NETWORK_MANAGEMENT_PROXY                                          ",.class_support_number = 0x52},
+{.command_class_suport =  " NETWORK_MANAGEMENT_BASIC                                          ",.class_support_number = 0x4D},
+{.command_class_suport =  " NETWORK_MANAGEMENT_INCLUSION                                      ",.class_support_number = 0x34},
+{.command_class_suport =  " NO_OPERATION                                                      ",.class_support_number = 0x00},
+{.command_class_suport =  " NODE_NAMING                                                       ",.class_support_number = 0x77},
+{.command_class_suport =  " NON_INTEROPERABLE                                                 ",.class_support_number = 0xF0},
+{.command_class_suport =  " POWERLEVEL                                                        ",.class_support_number = 0x73},
+{.command_class_suport =  " PREPAYMENT_ENCAPSULATION                                          ",.class_support_number = 0x41},
+{.command_class_suport =  " PREPAYMENT                                                        ",.class_support_number = 0x3F},
+{.command_class_suport =  " PROPRIETARY                                                       ",.class_support_number = 0x88},
+{.command_class_suport =  " PROTECTION                                                        ",.class_support_number = 0x75},
+{.command_class_suport =  " PROTECTION_V2                                                     ",.class_support_number = 0x75},
+{.command_class_suport =  " RATE_TBL_CONFIG                                                   ",.class_support_number = 0x48},
+{.command_class_suport =  " RATE_TBL_MONITOR                                                  ",.class_support_number = 0x49},
+{.command_class_suport =  " REMOTE_ASSOCIATION_ACTIVATE                                       ",.class_support_number = 0x7C},
+{.command_class_suport =  " REMOTE_ASSOCIATION                                                ",.class_support_number = 0x7D},
+{.command_class_suport =  " SCENE_ACTIVATION                                                  ",.class_support_number = 0x2B},
+{.command_class_suport =  " SCENE_ACTUATOR_CONF                                               ",.class_support_number = 0x2C},
+{.command_class_suport =  " SCENE_CONTROLLER_CONF                                             ",.class_support_number = 0x2D},
+{.command_class_suport =  " SCHEDULE_ENTRY_LOCK                                               ",.class_support_number = 0x4E},
+{.command_class_suport =  " SCHEDULE_ENTRY_LOCK_V2                                            ",.class_support_number = 0x4E},
+{.command_class_suport =  " SCHEDULE_ENTRY_LOCK_V3                                            ",.class_support_number = 0x4E},
+{.command_class_suport =  " SCREEN_ATTRIBUTES                                                 ",.class_support_number = 0x93},
+{.command_class_suport =  " SCREEN_ATTRIBUTES_V2                                              ",.class_support_number = 0x93},
+{.command_class_suport =  " SCREEN_MD                                                         ",.class_support_number = 0x92},
+{.command_class_suport =  " SCREEN_MD_V2                                                      ",.class_support_number = 0x92},
+{.command_class_suport =  " SECURITY_PANEL_MODE                                               ",.class_support_number = 0x24},
+{.command_class_suport =  " SECURITY_PANEL_ZONE_SENSOR                                        ",.class_support_number = 0x2F},
+{.command_class_suport =  " SECURITY_PANEL_ZONE                                               ",.class_support_number = 0x2E},
+{.command_class_suport =  " SECURITY                                                          ",.class_support_number = 0x98},
+{.command_class_suport =  " SENSOR_ALARM                                                      ",.class_support_number = 0x9C}, /*SDS10963-4 The Sensor Alarm {.command_class_suport = "COMMAND class can be used to realize Sensor Alarms.*/
+{.command_class_suport =  " SENSOR_BINARY                                                     ",.class_support_number = 0x30},
+//{.command_class_suport =  " SENSOR_BINARY_V2                                                  ",.class_support_number = 0x30},
+{.command_class_suport =  " SENSOR_CONFIGURATION                                              ",.class_support_number = 0x9E}, /*This {.command_class_suport = "COMMAND class adds the possibility for sensors to act on either a measured value or on a*/
+{.command_class_suport =  " SENSOR_MULTILEVEL                                                 ",.class_support_number = 0x31},
+//{.command_class_suport =  " SENSOR_MULTILEVEL_V2                                              ",.class_support_number = 0x31},
+//{.command_class_suport =  " SENSOR_MULTILEVEL_V3                                              ",.class_support_number = 0x31},
+//{.command_class_suport =  " SENSOR_MULTILEVEL_V4                                              ",.class_support_number = 0x31},
+//{.command_class_suport =  " SENSOR_MULTILEVEL_V5                                              ",.class_support_number = 0x31},
+//{.command_class_suport =  " SENSOR_MULTILEVEL_V6                                              ",.class_support_number = 0x31},
+{.command_class_suport =  " SILENCE_ALARM                                                     ",.class_support_number = 0x9D}, /*SDS10963-4 The Alarm Silence {.command_class_suport = "COMMAND class can be used to nuisance silence to temporarily disable the sounding*/
+{.command_class_suport =  " SIMPLE_AV_CONTROL                                                 ",.class_support_number = 0x94},
+{.command_class_suport =  " SWITCH_ALL                                                        ",.class_support_number = 0x27},
+{.command_class_suport =  " SWITCH_BINARY                                                     ",.class_support_number = 0x25},
+{.command_class_suport =  " SWITCH_MULTILEVEL                                                 ",.class_support_number = 0x26},
+{.command_class_suport =  " SWITCH_MULTILEVEL_V2                                              ",.class_support_number = 0x26},
+{.command_class_suport =  " SWITCH_MULTILEVEL_V3                                              ",.class_support_number = 0x26},
+{.command_class_suport =  " SWITCH_TOGGLE_BINARY                                              ",.class_support_number = 0x28},
+{.command_class_suport =  " SWITCH_TOGGLE_MULTILEVEL                                          ",.class_support_number = 0x29},
+{.command_class_suport =  " TARIFF_CONFIG                                                     ",.class_support_number = 0x4A},
+{.command_class_suport =  " TARIFF_TBL_MONITOR                                                ",.class_support_number = 0x4B},
+{.command_class_suport =  " THERMOSTAT_FAN_MODE                                               ",.class_support_number = 0x44},
+{.command_class_suport =  " THERMOSTAT_FAN_MODE_V2                                            ",.class_support_number = 0x44},
+{.command_class_suport =  " THERMOSTAT_FAN_MODE_V3                                            ",.class_support_number = 0x44},
+{.command_class_suport =  " THERMOSTAT_FAN_MODE_V4                                            ",.class_support_number = 0x44},
+{.command_class_suport =  " THERMOSTAT_FAN_STATE                                              ",.class_support_number = 0x45},
+{.command_class_suport =  " THERMOSTAT_HEATING                                                ",.class_support_number = 0x38},
+{.command_class_suport =  " THERMOSTAT_MODE                                                   ",.class_support_number = 0x40},
+{.command_class_suport =  " THERMOSTAT_MODE_V2                                                ",.class_support_number = 0x40},
+{.command_class_suport =  " THERMOSTAT_MODE_V3                                                ",.class_support_number = 0x40},
+{.command_class_suport =  " THERMOSTAT_OPERATING_STATE                                        ",.class_support_number = 0x42},
+{.command_class_suport =  " THERMOSTAT_OPERATING_STATE_V2                                     ",.class_support_number = 0x42},
+{.command_class_suport =  " THERMOSTAT_SETBACK                                                ",.class_support_number = 0x47},
+{.command_class_suport =  " THERMOSTAT_SETPOINT                                               ",.class_support_number = 0x43},
+//{.command_class_suport =  " THERMOSTAT_SETPOINT_V2                                            ",.class_support_number = 0x43},
+//{.command_class_suport =  " THERMOSTAT_SETPOINT_V3                                            ",.class_support_number = 0x43},
+{.command_class_suport =  " TIME_PARAMETERS                                                   ",.class_support_number = 0x8B},
+{.command_class_suport =  " TIME                                                              ",.class_support_number = 0x8A},
+//{.command_class_suport =  " TIME_V2                                                           ",.class_support_number = 0x8A},
+{.command_class_suport =  " TRANSPORT_SERVICE                                                 ",.class_support_number = 0x55},
+//{.command_class_suport =  " TRANSPORT_SERVICE_V2                                              ",.class_support_number = 0x55},
+{.command_class_suport =  " USER_CODE                                                         ",.class_support_number = 0x63},
+{.command_class_suport =  " VERSION                                                           ",.class_support_number = 0x86},
+//{.command_class_suport =  " VERSION_V2                                                        ",.class_support_number = 0x86},
+{.command_class_suport =  " WAKE_UP                                                           ",.class_support_number = 0x84},
+//{.command_class_suport =  " WAKE_UP_V2                                                        ",.class_support_number = 0x84},
+{.command_class_suport =  " ZIP_6LOWPAN                                                       ",.class_support_number = 0x4F},
+{.command_class_suport =  " ZIP                                                               ",.class_support_number = 0x23},
+{.command_class_suport =  " ZIP_V2                                                            ",.class_support_number = 0x23},
+{.command_class_suport =  " APPLICATION_CAPABILITY                                            ",.class_support_number = 0x57},
+{.command_class_suport =  " COLOR_CONTROL                                                     ",.class_support_number = 0x33},
+{.command_class_suport =  " COLOR_CONTROL_V2                                                  ",.class_support_number = 0x33},
+{.command_class_suport =  " SCHEDULE                                                          ",.class_support_number = 0x53},
+{.command_class_suport =  " NETWORK_MANAGEMENT_PRIMARY                                        ",.class_support_number = 0x54},
+{.command_class_suport =  " ZIP_ND                                                            ",.class_support_number = 0x58},
+{.command_class_suport =  " ASSOCIATION_GRP_INFO                                              ",.class_support_number = 0x59},
+{.command_class_suport =  " DEVICE_RESET_LOCALLY                                              ",.class_support_number = 0x5A},
+{.command_class_suport =  " CENTRAL_SCENE                                                     ",.class_support_number = 0x5B},
+{.command_class_suport =  " IP_ASSOCIATION                                                    ",.class_support_number = 0x5C},
+{.command_class_suport =  " ANTITHEFT                                                         ",.class_support_number = 0x5D},
+{.command_class_suport =  " ANTITHEFT_V2                                                      ",.class_support_number = 0x5D},
+{.command_class_suport =  " ZWAVEPLUS_INFO                                                    ",.class_support_number = 0x5E}, /*SDS11907-3*/
+{.command_class_suport =  " ZWAVEPLUS_INFO_V2                                                 ",.class_support_number = 0x5E}, /*SDS11907-3*/
+{.command_class_suport =  " ZIP_GATEWAY                                                       ",.class_support_number = 0x5F},
+{.command_class_suport =  " ZIP_PORTAL                                                        ",.class_support_number = 0x61},
+{.command_class_suport =  " APPLIANCE                                                         ",.class_support_number = 0x64},
+{.command_class_suport =  " DMX                                                               ",.class_support_number = 0x65},
+{.command_class_suport =  " BARRIER_OPERATOR                                                  ",.class_support_number = 0x66},
+
 
 };
 
@@ -677,11 +688,12 @@ cmd_handler_t cmd_list[CMD_MAX] = {
     {.cmd_idx = CMD_DOOR_NONCE_GET, .help = "Door nonce get ", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_DOOR_OPEN, .help = "Door open ", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_DOOR_CLOSE, .help = "Door close ", .cmd_func = cmd_rm},
-    {.cmd_idx = CMD_GET_BATTERY, .help = "Get battery level ", .cmd_func = cmd_rm},
-    {.cmd_idx = CMD_SENSOR_MULTILEVEL_GET, .help = "Get sensor multi level ", .cmd_func = cmd_rm},
-    {.cmd_idx = CMD_SENSOR_HEAVY_DUTY_SMART_SWITCH, .help = "Get sensor heavy duty smart switch ", .cmd_func = cmd_rm},
-    {.cmd_idx = CMD_SET_ALAM_REPORT_ONOFF_BULBS, .help = "Set Alarm multi sensor turn ON/OFF bulb ", .cmd_func = cmd_rm},
-    {.cmd_idx = CMD_SET_CONFIGURATION_NODE, .help = "Set configuration node ", .cmd_func = cmd_rm},
+  //  {.cmd_idx = CMD_GET_BATTERY, .help = "Get battery level ", .cmd_func = cmd_rm},
+  //  {.cmd_idx = CMD_SENSOR_MULTILEVEL_GET, .help = "Get sensor multi level ", .cmd_func = cmd_rm},
+  //  {.cmd_idx = CMD_SENSOR_HEAVY_DUTY_SMART_SWITCH, .help = "Get sensor heavy duty smart switch ", .cmd_func = cmd_rm},
+  //  {.cmd_idx = CMD_SET_ALAM_REPORT_ONOFF_BULBS, .help = "Set Alarm multi sensor turn ON/OFF bulb ", .cmd_func = cmd_rm},
+    {.cmd_idx = CMD_SET_CONFIGURATION_NODE, .help = "Set Configuration node ", .cmd_func = cmd_rm},
+    {.cmd_idx = CMD_FEATURE_OPTION_NODE, .help = "Using Feature of node ", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_V, .help = "Verbose", .cmd_func = cmd_rm},
     {.cmd_idx = CMD_EXIT, .help = "Exit program", .cmd_func = NULL}
 };
@@ -865,19 +877,16 @@ void *command_handling_loop(void *unused)
     }
     return NULL;
 }
-
+feature_option_t feature_option[50];
 int main(int argc, char *argv[])
 {
     pthread_t   thread_reader;
     gLogLevel=2;
-    //ZW_Node_t node;
-    //ZW_Node_t node_list[232];
-    //uint8_t   node_list_size;  
     char cmd[256];
 
-    //uint8_t group_list[232];
     uint8_t group_size;
-
+    uint8_t feature_count = 0;
+   
     TZWParam *pzwParam = (TZWParam*)malloc(sizeof(TZWParam));
 
     uint8_t i;
@@ -915,6 +924,7 @@ int main(int argc, char *argv[])
                     uint16_t manufacturerID_temp ,productTypeID_temp,productID_temp;
                     int manu_count,command_class_count,product_id_count,product_type_count;
                     uint32_t type_pro_temp;
+                   
                     
              /*       mainlog(logUI,"TEST: NodeID[%02X], node type[%02X] has mID:%02X%02X, pID:%02X%02X::%02X%02X",pzwParam->node.node_id,pzwParam->node.node_type,
                                                                             pzwParam->node.node_manufacture.manufacturerID[0],
@@ -925,6 +935,9 @@ int main(int argc, char *argv[])
                                                                             pzwParam->node.node_manufacture.productID[1]); */
                     //manufacture_id.manufacture_id_value = pzwParam->node.node_manufacture.manufacturerID[0] ;
                     mainlog(logUI,"TEST: NodeID[%02X], node type[%02X]", pzwParam->node.node_id,pzwParam->node.node_type ) ;
+                    feature_option[feature_count].feature_id = pzwParam->node.node_id;
+                    
+
                     manufacturerID_temp  = (pzwParam->node.node_manufacture.manufacturerID[0] << 8)
                                                                | pzwParam->node.node_manufacture.manufacturerID[1];
 
@@ -959,7 +972,8 @@ int main(int argc, char *argv[])
                             printf("product_id_name: %s \n",product_id_t[product_id_count].product_id_name);
                         }
                     } 
-
+                   // feature_option[feature_count].feature_num = 0;
+                    int feature_class_count = 0;
                     printf("\tCommand class support: \n");
                     for (i=0;i<pzwParam->node.node_capability.noCapability;i++)
                     {
@@ -969,11 +983,15 @@ int main(int argc, char *argv[])
                             if(pzwParam->node.node_capability.aCapability[i] == class_suport_t[command_class_count].class_support_number)
                             {
                                 printf("\t\t%s\n",class_suport_t[command_class_count].command_class_suport);
+                                feature_option[feature_count].feature_class[feature_class_count] = class_suport_t[command_class_count] ;
+                              //  feature_option[feature_count].feature_num ++;
+                                feature_class_count++;
+                                
                             }
                         }
                     }
-                    //printf("\n");
-                }
+                    feature_option[feature_count].feature_num = feature_class_count;
+                }feature_count++;
                 break;
             case CMD_RM:
                 pzwParam->command=COMMAND_CLASS_SPECIFIC_NODE_REMOVE;
@@ -1117,7 +1135,7 @@ int main(int argc, char *argv[])
                     break;
                 }
                 break;
-            case CMD_SET_ALAM_REPORT_ONOFF_BULBS:
+       /*     case CMD_SET_ALAM_REPORT_ONOFF_BULBS:
                 printf("Please enter nodeID sensor, NodeID_ad need to add and GroupID : ");
                 //int NodeID_ad;
                 if(scanf("%X %X %X",&NodeID,&NodeID_ad, &GroupID) == 3)
@@ -1135,7 +1153,7 @@ int main(int argc, char *argv[])
                         mainlog(logUI,"TEST: Node[%02X] and Node[%02X] Alarm ON/OFF bulb group ID:%03x! ",NodeID,NodeID_ad,GroupID);
                     }
                 }
-                break;  
+                break;  */
             case CMD_SET_CONFIGURATION_NODE:
             printf("set timer configuration \n");
             int timer_configuration_set;
@@ -1489,7 +1507,7 @@ int main(int argc, char *argv[])
                     break;
                 }
                 break;    
-            case CMD_GET_BATTERY:
+    /*        case CMD_GET_BATTERY:
                 printf("Please provide the NodeID: ");
                 if (scanf("%X",&NodeID)==1)
                 {
@@ -1593,111 +1611,428 @@ int main(int argc, char *argv[])
                 {
                     break;
                 }
-                break;
+                break; 
             case CMD_SENSOR_HEAVY_DUTY_SMART_SWITCH:
                     //printf("Please provide the NodeID and SensorType: ");
                     printf("1. sensor \t 2.meter \n");
                 int choise;
-                scanf("%d",&choise);
-                if(choise == 1)
-                {  
-                 printf("Please provide the NodeID and SensorType: ");
-                    scanf("%X %X",&NodeID,&SensorType);
-
-                    if((SensorType == 0x01) | (SensorType == 0x05))
+                if(scanf("%d",&choise) == 1)
+                {
+                    if(choise == 1)
+                    {  
+                     printf("Please provide the NodeID and SensorType: ");
+                    if(scanf("%X %X",&NodeID,&SensorType) == 2)
                     {
-                         printf("you have chosen temperature or humidity measurement! \n");
-                        pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
-                        pzwParam->param2=NodeID;
-                        pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_SENSOR_MULTILEVEL;
-                        pzwParam->cmd_set.cmd[1]= SENSOR_MULTILEVEL_GET;
-                        pzwParam->cmd_set.cmd[2]= (uint8_t)SensorType;
-                        pzwParam->cmd_set.cmd[3]= (1<<3); 
-                        //pzwParam->cmd_set.cmd[5] = 0x80;
-                        pzwParam->cmd_set.cmd_length=8;
-                        zwaveSendCommand(pzwParam);
-                        if (pzwParam->ret==0) 
-                        {
-                            unsigned long result_from_hex;
-                            int precicsion;
-                            mainlog(logUI,"TEST: Node[%02X] says sensor level:%02x! ",NodeID,pzwParam->data_out.cmd[2]);
-                            printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
-                                pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
-                            precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]>>5));
-
-                            switch(SensorType)
+                            if((SensorType == 0x01) | (SensorType == 0x05))
                             {
-                                case SENSOR_MULTILEVEL_REPORT_TEMPERATURE_VERSION_1_V4:
+                                 printf("you have chosen temperature or humidity measurement! \n");
+                                pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
+                                pzwParam->param2=NodeID;
+                                pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_SENSOR_MULTILEVEL;
+                                pzwParam->cmd_set.cmd[1]= SENSOR_MULTILEVEL_GET;
+                                pzwParam->cmd_set.cmd[2]= (uint8_t)SensorType;
+                                pzwParam->cmd_set.cmd[3]= (1<<3); 
+                                //pzwParam->cmd_set.cmd[5] = 0x80;
+                                pzwParam->cmd_set.cmd_length=8;
+                                zwaveSendCommand(pzwParam);
+                                if (pzwParam->ret==0) 
                                 {
-                                    float temperature;
-                                    printf("TEMPARATURE ! \n");
-                                
-                                        temperature = (uint16_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5] <<16) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
-                                        printf("Fahrenheit (F) : %2.2lf \n",temperature/precicsion);
-                                        printf("Celsius (C) : %2.2lf\n",
-                                            (temperature/precicsion -32.0)*5.0/9.0);
-                                        break;
-                                }
-                                case SENSOR_MULTILEVEL_REPORT_RELATIVE_HUMIDITY_VERSION_2_V4:
-                                {
-                                    float humidity_tmp;
-                                    printf("HUMIDITY ! \n");
-                                        humidity_tmp = (uint16_t)pzwParam->data_out.cmd[6] * 27.2 ;
-                                        printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[6]);
-                                        printf("Absolute humidity (g/cm3) : %2.2lf\n",
-                                        (humidity_tmp/precicsion)/100);
-                                    break;
+                                    unsigned long result_from_hex;
+                                    int precicsion;
+                                    mainlog(logUI,"TEST: Node[%02X] says sensor level:%02x! ",NodeID,pzwParam->data_out.cmd[2]);
+                                    printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
+                                        pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
+                                    precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]>>5));
+
+                                    switch(SensorType)
+                                    {
+                                        case SENSOR_MULTILEVEL_REPORT_TEMPERATURE_VERSION_1_V4:
+                                        {
+                                            float temperature;
+                                            printf("TEMPARATURE ! \n");
+                                        
+                                                temperature = (uint16_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5] <<16) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
+                                                printf("Fahrenheit (F) : %2.2lf \n",temperature/precicsion);
+                                                printf("Celsius (C) : %2.2lf\n",
+                                                    (temperature/precicsion -32.0)*5.0/9.0);
+                                                break;
+                                        }
+                                        case SENSOR_MULTILEVEL_REPORT_RELATIVE_HUMIDITY_VERSION_2_V4:
+                                        {
+                                            float humidity_tmp;
+                                            printf("HUMIDITY ! \n");
+                                                humidity_tmp = (uint16_t)pzwParam->data_out.cmd[6] * 27.2 ;
+                                                printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[6]);
+                                                printf("Absolute humidity (g/cm3) : %2.2lf\n",
+                                                (humidity_tmp/precicsion)/100);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if(choise == 2)
-                {
-                    printf("enter nodeID & meter typer: ");
-                    if(scanf("%X %X",&NodeID,&Meter_Type) == 2)
+
+                    if(choise == 2)
                     {
-                        printf("you have chosen Power measurement! \n");
-                        pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
-                        pzwParam->param2=NodeID;
-                        pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_METER;
-                        pzwParam->cmd_set.cmd[1]= METER_GET;
-                        pzwParam->cmd_set.cmd[2]= (uint8_t)Meter_Type;
-                        pzwParam->cmd_set.cmd[3]= 0x21 ;//(1<<4); 
-                        //pzwParam->cmd_set.cmd[5] = 0x80;
-                        pzwParam->cmd_set.cmd_length=10;
-                        zwaveSendCommand(pzwParam);
-                        if (pzwParam->ret==0) 
+                        printf("enter nodeID & meter typer: ");
+                        if(scanf("%X %X",&NodeID,&Meter_Type) == 2)  //0x01
                         {
-                            unsigned long result_from_hex;
-                            int precicsion;
-                            int delta_time;
-                            mainlog(logUI,"TEST: Node[%02X] says sensor level:%02X! ",NodeID,pzwParam->data_out.cmd[2]);
-                            printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
-                                pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
-                            precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]&0x020>>5));
+                            printf("you have chosen Power measurement! \n");
+                            pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
+                            pzwParam->param2=NodeID;
+                            pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_METER;
+                            pzwParam->cmd_set.cmd[1]= METER_GET;
+                            pzwParam->cmd_set.cmd[2]= (uint8_t)Meter_Type;
+                            pzwParam->cmd_set.cmd[3]= 0x21 ;//(1<<4); 
+                            //pzwParam->cmd_set.cmd[5] = 0x80;
+                            pzwParam->cmd_set.cmd_length=10;
+                            zwaveSendCommand(pzwParam);
+                            if (pzwParam->ret==0) 
+                            {
+                                unsigned long result_from_hex;
+                                int precicsion;
+                                int delta_time;
+                                mainlog(logUI,"TEST: Node[%02X] says sensor level:%02X! ",NodeID,pzwParam->data_out.cmd[2]);
+                                printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
+                                    pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
+                                precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]&0x020>>5));
 
+                                
+                                float  watt_measurement;
+                                printf("kWah ! \n");
                             
-                            float  watt_measurement;
-                            printf("kWah ! \n");
-                        
-                            watt_measurement = (uint32_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5]<< 16 ) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
-                            delta_time = (uint16_t)((pzwParam->data_out.cmd[8]<< 8) | pzwParam->data_out.cmd[9]);
+                                watt_measurement = (uint32_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5]<< 16 ) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
+                                delta_time = (uint16_t)((pzwParam->data_out.cmd[8]<< 8) | pzwParam->data_out.cmd[9]);
 
-                            printf("Electric Meter (W) : %2.2lf \n",watt_measurement/precicsion);
-                            printf("Delta time (s): %d\n", delta_time);
-                            printf("Power consumption(Wh): %2.5lf \n",(watt_measurement/precicsion)*delta_time /3600 );
-                            printf("BTu/h (btu/h) : %2.2lf\n",
-                                ((watt_measurement/precicsion)/1000)*1.36);
+                                printf("Electric Meter (W) : %2.2lf \n",watt_measurement/precicsion);
+                                printf("Delta time (s): %d\n", delta_time);
+                                printf("Power consumption(Wh): %2.5lf \n",(watt_measurement/precicsion)*delta_time /3600 );
+                                printf("BTu/h (btu/h) : %2.2lf\n",
+                                    ((watt_measurement/precicsion)/1000)*1.36);
+                            }
                         }
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
+                break; */
+            case CMD_FEATURE_OPTION_NODE:
                 {
-                    break;
+                    int feature_option_count,count_feature_enum , choise_feature ;
+                    int count1,count2,flag,check = 1;
+                    uint16_t feature_class_support_number[15];
+                    printf("NodeID : ");
+                    if(scanf("%X",&NodeID) == 1)
+                    {
+                        printf("there are main feature: \n");
+                    }
+                    count_feature_enum = 0;
+                    count2 = 1;
+
+                    for(count1 = 0;count1<feature_count;count1++)
+                    {
+                        if(NodeID == feature_option[count1].feature_id)
+                        {
+                              for(feature_option_count =0;feature_option_count<feature_option[count1].feature_num;feature_option_count++)
+                              {  
+                                if( (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x31 )
+                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x32) 
+                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x71) 
+                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x80)
+                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x84)
+                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x85) )
+                                {
+                                        printf("\t%d.\t%s\n",count_feature_enum,feature_option[count1].feature_class[feature_option_count].command_class_suport);
+                                        feature_class_support_number[count_feature_enum] = feature_option[count1].feature_class[feature_option_count].class_support_number;
+                                        count_feature_enum++;
+                                }
+                              }  flag = count1;    
+                        }
+                    }
+                    printf("\n %d",count_feature_enum);
+                  //  do
+                  //  {
+                        printf("Please choose your feature. \n");
+                      // printf("1 .Battery Get Feature \n2 .Wake Up Feature \n3 .Association \n4 .Sensor Multilevel Feature \n5 .Metter Feature \n0. Exit \n");
+                         for(feature_option_count =0;feature_option_count<=count_feature_enum;feature_option_count++)
+                              { 
+                                if(feature_class_support_number[feature_option_count] == 0x80)
+                                    {
+                                        printf(" -Battery Get  \n");
+                                        count2++;
+                                    }
+                                else if(feature_class_support_number[feature_option_count] == 0x84)
+                                    {
+                                        printf(" -Wake Up  \n");
+                                        count2++;
+                                    }
+                                else if(feature_class_support_number[feature_option_count] == 0x85)
+                                    {
+                                        printf(" -Association  \n");
+                                        count2++;
+                                    }
+                                else if(feature_class_support_number[feature_option_count] == 0x31)
+                                    {
+                                        printf(" -Sensor Multilevel  \n");
+                                        count2++;
+                                    }
+                                else if(feature_class_support_number[feature_option_count] == 0x32)
+                                    {
+                                        printf(" -Metter  \n");
+                                        count2++;
+                                    }
+                              }   
+                              do
+                                 {
+                                    
+                        scanf("%d",&choise_feature);
+                        switch(choise_feature)
+                        {
+                            case 1:
+                            {
+                                printf("Battery Get Feature. \n");
+                                pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
+                                pzwParam->param2=NodeID;
+                                pzwParam->cmd_set.cmd[0]=COMMAND_CLASS_BATTERY;
+                                pzwParam->cmd_set.cmd[1]=BATTERY_GET;
+                                pzwParam->cmd_set.cmd_length=2;
+                                zwaveSendCommand(pzwParam);
+                                if (pzwParam->ret==0)
+                                {
+                                    mainlog(logUI,"TEST: Node[%02X] says battery level:%03u! \n",NodeID,pzwParam->data_out.cmd[2]);
+                                }
+
+                            break;
+                            }
+                            case 2:
+                            printf("Wake Up Feature. \n");
+                            break;
+                            case 3:
+                            {
+                                    printf("Association. \n");
+                                    int choise_association;
+                                    printf("1. add group \t2. remove group \n");
+                                    scanf("%d",&choise_association);
+                                    switch(choise_association)
+                                    {
+                                        case 1:
+                                        {
+                                            printf("Please enter NodeID_ad and GroupID : ");
+                                            if(scanf("%X %X",&NodeID_ad, &GroupID) == 2)
+                                            {
+                                                pzwParam->command=COMMAND_CLASS_SPECIFIC_SET_SPECIFICAION_DATA ; 
+                                                pzwParam->param2=NodeID;
+                                                pzwParam->param3 = 0x01;
+                                                pzwParam->cmd_set.cmd[0]=COMMAND_CLASS_ASSOCIATION;
+                                                pzwParam->cmd_set.cmd[1]= ASSOCIATION_SET;
+                                                pzwParam->cmd_set.cmd[2]= GroupID;
+                                                pzwParam->cmd_set.cmd[3]=NodeID_ad;
+                                                pzwParam->cmd_set.cmd_length=4;
+                                                zwaveSendCommand(pzwParam);
+                                                if (pzwParam->ret==0)
+                                                {
+                                                    mainlog(logUI,"TEST: Node[%02X] and Node[%02X] Alarm water group ID:%03x! ",NodeID,NodeID_ad,GroupID);
+                                                }
+                                            }
+                                            break;
+                                        }
+                                        case 2:
+                                        {
+                                            printf("Please enter NodeID_ad and GroupID need to remove: ");
+                                            if(scanf("%X %X",&NodeID_ad, &GroupID) == 2)
+                                            {
+                                                pzwParam->command=COMMAND_CLASS_SPECIFIC_SET_SPECIFICAION_DATA ; 
+                                                pzwParam->param2=NodeID;
+                                                pzwParam->param3 = 0x01;
+                                                pzwParam->cmd_set.cmd[0]=COMMAND_CLASS_ASSOCIATION;
+                                                pzwParam->cmd_set.cmd[1]= ASSOCIATION_REMOVE;
+                                                pzwParam->cmd_set.cmd[2]= GroupID;
+                                                pzwParam->cmd_set.cmd[3]=NodeID_ad;
+                                                pzwParam->cmd_set.cmd_length=4;
+                                                zwaveSendCommand(pzwParam);
+                                                if (pzwParam->ret==0)
+                                                {
+                                                    mainlog(logUI,"TEST: Node[%02X] and Node[%02X] Alarm water group ID:%03x! ",NodeID,NodeID_ad,GroupID);
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                              break;
+                            }
+                            case 4:
+                            {
+                                int SensorType_choise;
+                                printf("Sensor Multilevel Feature. \n");
+                                printf("Please provide the SensorType: \n");
+                                printf("1. TEMPARATURE \n2. HUMIDITY \n3. LUMINANCE \n4. ULTRAVIOLET\n5. Exit \n");
+                                    if(scanf("%X",&SensorType_choise)== 1)
+                                    {
+                                        if(SensorType_choise == 1)
+                                        {
+                                            SensorType = 0x01;
+                                        }
+                                        else if(SensorType_choise == 2)
+                                        {
+                                            SensorType = 0x05;
+                                        }
+                                        else if(SensorType_choise == 3)
+                                        {
+                                            SensorType = 0x03;
+                                        }
+                                        else if(SensorType_choise == 4)
+                                        {
+                                            SensorType = 0x1B;
+                                        }
+                                        else if(SensorType_choise == 5)
+                                        {
+                                            break;
+                                        }
+                                        pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
+                                        pzwParam->param2=NodeID;
+                                        pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_SENSOR_MULTILEVEL;
+                                        pzwParam->cmd_set.cmd[1]= SENSOR_MULTILEVEL_GET;
+                                        pzwParam->cmd_set.cmd[2]= (uint8_t)SensorType;
+                                        pzwParam->cmd_set.cmd[3]= 0x2A;//(1<<3); 
+                                        pzwParam->cmd_set.cmd[5] = 0x80;
+                                        pzwParam->cmd_set.cmd_length=6;
+                                        zwaveSendCommand(pzwParam);
+                                        if (pzwParam->ret==0) 
+                                        {
+                                            unsigned long result_from_hex;
+                                            int precicsion;
+                                            mainlog(logUI,"TEST: Node[%02X] says sensor level:%03u! ",NodeID,pzwParam->data_out.cmd[2]);
+                                            printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
+                                                pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
+                                            precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]>>5));
+
+                                            switch(SensorType_choise)
+                                            {
+                                                case 1:
+                                                {
+                                                    float temperature;
+                                                    printf("TEMPARATURE ! \n");
+                                                        if((pzwParam->data_out.cmd[3]& 0x07) == 0x01)
+                                                        {
+                                                             temperature = (uint16_t)pzwParam->data_out.cmd[4];
+                                                        }
+                                                        else if((pzwParam->data_out.cmd[3]& 0x07) == 0x02)
+                                                        {
+                                                             temperature = (uint16_t)((pzwParam->data_out.cmd[4]<< 8) | pzwParam->data_out.cmd[5]);
+                                                        }
+                                                        else if((pzwParam->data_out.cmd[3]& 0x07) == 0x04)
+                                                        {
+                                                             temperature = (uint32_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5] <<16) 
+                                                                                            | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);  
+                                                        }
+                                                        printf("Fahrenheit (F) : %2.2lf \n",temperature/precicsion);
+                                                        printf("Celsius (C) : %2.2lf\n",
+                                                            ((temperature/precicsion)-32.0)*5.0/9.0);
+                                                        break;
+
+                                                }
+                                                case 2:
+                                                {
+                                                    float humidity_tmp;
+                                                    printf("HUMIDITY ! \n");
+                                                    if((pzwParam->data_out.cmd[3]& 0x07) == 0x01)
+                                                    {
+                                                        humidity_tmp = (uint16_t)pzwParam->data_out.cmd[4] * 27.2 /100;
+                                                        printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[4]);
+                                                    }
+                                                    else if((pzwParam->data_out.cmd[3]& 0x07) == 0x02)
+                                                    {
+                                                        humidity_tmp = (uint16_t)((pzwParam->data_out.cmd[4]<< 8) | pzwParam->data_out.cmd[5]) * 27.2 /100;
+                                                        printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[4]);
+                                                    }
+                                                    else if((pzwParam->data_out.cmd[3]& 0x07) == 0x04)
+                                                    {
+                                                        humidity_tmp = (uint16_t)pzwParam->data_out.cmd[6] * 27.2 ;
+                                                        printf("Percentage value (%%) : %d\n",pzwParam->data_out.cmd[6]);
+                                                    }
+                                                        printf("Absolute humidity (g/cm3) : %2.2lf\n",
+                                                                                humidity_tmp/precicsion);
+                                                    break;
+                                                }
+                                                case 3 : //03
+                                                {
+                                                    float luminance_tmp ;
+                                                    luminance_tmp = (uint16_t)((pzwParam->data_out.cmd[4]<< 8) | pzwParam->data_out.cmd[5]);
+                                                    printf("LUMINANCE: \n");
+                                                    printf("\t luminance value (LUX) : %2.2lf \n",luminance_tmp);
+                                                    break;
+                                                }
+                                                case 4 : //1B
+                                                {
+                                                   // float velocity;
+                                                    printf("ULTRAVIOLET: \n");
+                                                    printf("\t ultraviolet value (UV) : %2d \n",pzwParam->data_out.cmd[4]);
+                                                    break ;
+                                                }    
+                                            }
+                                        }
+                                    }
+                                break;    
+                            }
+                            case 5:
+                            {
+                            printf("Metter Feature. \n");
+                            printf("1. Electric Meter \n2. Gas Meter \n3. Water Meter \n");
+                            if(scanf("%X",&Meter_Type) == 1)  //0x01
+                                {
+                                    if(Meter_Type == 1)
+                                    {
+                                        Meter_Type = 0x01;
+                                    printf("you have chosen Power measurement! \n");
+                                    pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
+                                    pzwParam->param2=NodeID;
+                                    pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_METER;
+                                    pzwParam->cmd_set.cmd[1]= METER_GET;
+                                    pzwParam->cmd_set.cmd[2]= (uint8_t)Meter_Type;
+                                    pzwParam->cmd_set.cmd[3]= 0x21 ;//(1<<4); 
+                                    //pzwParam->cmd_set.cmd[5] = 0x80;
+                                    pzwParam->cmd_set.cmd_length=10;
+                                    zwaveSendCommand(pzwParam);
+                                        if (pzwParam->ret==0) 
+                                        {
+                                            unsigned long result_from_hex;
+                                            int precicsion;
+                                            int delta_time;
+                                            mainlog(logUI,"TEST: Node[%02X] says sensor level:%02X! ",NodeID,pzwParam->data_out.cmd[2]);
+                                            printf("Sensor typer: [%02x] precicsion: [%02x] : scale: [%02x] : size: [%02x]\n",
+                                                pzwParam->data_out.cmd[2],(pzwParam->data_out.cmd[3]&0x20)>>5,(pzwParam->data_out.cmd[3]& 0x18)>>3,pzwParam->data_out.cmd[3]& 0x07);
+                                            precicsion = (uint16_t)expo((uint8_t)(pzwParam->data_out.cmd[3]&0x020>>5));
+
+                                            
+                                            float  watt_measurement;
+                                            printf("kWah ! \n");
+                                        
+                                            watt_measurement = (uint32_t)((pzwParam->data_out.cmd[4]<< 24) | (pzwParam->data_out.cmd[5]<< 16 ) | (pzwParam->data_out.cmd[6]<< 8) | pzwParam->data_out.cmd[7]);
+                                            delta_time = (uint16_t)((pzwParam->data_out.cmd[8]<< 8) | pzwParam->data_out.cmd[9]);
+
+                                            printf("Electric Meter (W) : %2.2lf \n",watt_measurement/precicsion);
+                                            printf("Delta time (s): %d\n", delta_time);
+                                            printf("Power consumption(Wh): %2.5lf \n",(watt_measurement/precicsion)*delta_time /3600 );
+                                            printf("BTu/h (btu/h) : %2.2lf\n",
+                                                ((watt_measurement/precicsion)/1000)*1.36);
+                                        }
+                                    }
+                                }
+                            break;
+                            }
+                            case 0:
+                            break;
+                            
+                        }
+                        printf("1.continue \t0.stop and exit\n");
+                        scanf("%d",&check);
+                    }while(check != 0);
+
                 }
                 break;
-           
             case CMD_EXIT:
                 mainlog(logQuerry,"BYE BYE :-*, :-*");
                 exit(0);
