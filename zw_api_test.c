@@ -11,7 +11,7 @@
 #define manu_max 161
 #define manu_pID_max 179
 #define manu_pType_max 15
-#define manu_class_suport_max 158
+#define manu_class_suport_max 118
 enum COMMAND_IDX {
     CMD_ADD = 0,
     CMD_RM,
@@ -310,16 +310,10 @@ Manu_product_id_t product_id_t[manu_pID_max]={
 };
 
 Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
-
-
 {.command_class_suport =  " ALARM                                                             ",.class_support_number = 0x71},
-//{.command_class_suport =  " ALARM_V2                                                          ",.class_support_number = 0x71},
-//{.command_class_suport =  " NOTIFICATION_V3                                                   ",.class_support_number = 0x71},
-//{.command_class_suport =  " NOTIFICATION_V4                                                   ",.class_support_number = 0x71},
 {.command_class_suport =  " APPLICATION_STATUS                                                ",.class_support_number = 0x22},
 {.command_class_suport =  " ASSOCIATION_COMMAND_CONFIGURATION                                 ",.class_support_number = 0x9B},
 {.command_class_suport =  " ASSOCIATION                                                       ",.class_support_number = 0x85},
-//{.command_class_suport =  " ASSOCIATION_V2                                                    ",.class_support_number = 0x85},
 {.command_class_suport =  " AV_CONTENT_DIRECTORY_MD                                           ",.class_support_number = 0x95},
 {.command_class_suport =  " AV_CONTENT_SEARCH_MD                                              ",.class_support_number = 0x97},
 {.command_class_suport =  " AV_RENDERER_STATUS                                                ",.class_support_number = 0x96},
@@ -332,17 +326,14 @@ Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
 {.command_class_suport =  " CLIMATE_CONTROL_SCHEDULE                                          ",.class_support_number = 0x46},
 {.command_class_suport =  " CLOCK                                                             ",.class_support_number = 0x81},
 {.command_class_suport =  " CONFIGURATION                                                     ",.class_support_number = 0x70},
-{.command_class_suport =  " CONFIGURATION_V2                                                  ",.class_support_number = 0x70},
 {.command_class_suport =  " CONTROLLER_REPLICATION                                            ",.class_support_number = 0x21},
 {.command_class_suport =  " CRC_16_ENCAP                                                      ",.class_support_number = 0x56},
 {.command_class_suport =  " DCP_CONFIG                                                        ",.class_support_number = 0x3A},
 {.command_class_suport =  " DCP_MONITOR                                                       ",.class_support_number = 0x3B},
 {.command_class_suport =  " DOOR_LOCK_LOGGING                                                 ",.class_support_number = 0x4C},
 {.command_class_suport =  " DOOR_LOCK                                                         ",.class_support_number = 0x62},
-{.command_class_suport =  " DOOR_LOCK_V2                                                      ",.class_support_number = 0x62},
 {.command_class_suport =  " ENERGY_PRODUCTION                                                 ",.class_support_number = 0x90},
 {.command_class_suport =  " FIRMWARE_UPDATE_MD                                                ",.class_support_number = 0x7A},
-//{.command_class_suport =  " FIRMWARE_UPDATE_MD_V2                                             ",.class_support_number = 0x7A},
 {.command_class_suport =  " GEOGRAPHIC_LOCATION                                               ",.class_support_number = 0x8C},
 {.command_class_suport =  " GROUPING_NAME                                                     ",.class_support_number = 0x7B},
 {.command_class_suport =  " HAIL                                                              ",.class_support_number = 0x82},
@@ -354,21 +345,15 @@ Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
 {.command_class_suport =  " LOCK                                                              ",.class_support_number = 0x76},
 {.command_class_suport =  " MANUFACTURER_PROPRIETARY                                          ",.class_support_number = 0x91},
 {.command_class_suport =  " MANUFACTURER_SPECIFIC                                             ",.class_support_number = 0x72},
-{.command_class_suport =  " MANUFACTURER_SPECIFIC_V2                                          ",.class_support_number = 0x72},
 {.command_class_suport =  " MARK                                                              ",.class_support_number = 0xEF},
 {.command_class_suport =  " METER_PULSE                                                       ",.class_support_number = 0x35},
 {.command_class_suport =  " METER_TBL_CONFIG                                                  ",.class_support_number = 0x3C},
 {.command_class_suport =  " METER_TBL_MONITOR                                                 ",.class_support_number = 0x3D},
-//{.command_class_suport =  " METER_TBL_MONITOR_V2                                              ",.class_support_number = 0x3D},
 {.command_class_suport =  " METER_TBL_PUSH                                                    ",.class_support_number = 0x3E},
 {.command_class_suport =  " METER                                                             ",.class_support_number = 0x32},
-//{.command_class_suport =  " METER_V2                                                          ",.class_support_number = 0x32},
-//{.command_class_suport =  " METER_V3                                                          ",.class_support_number = 0x32},
-//{.command_class_suport =  " METER_V4                                                          ",.class_support_number = 0x32},
 {.command_class_suport =  " MTP_WINDOW_COVERING                                               ",.class_support_number = 0x51},
 {.command_class_suport =  " MULTI_CHANNEL_ASSOCIATION_V2                                      ",.class_support_number = 0x8E},
 {.command_class_suport =  " MULTI_CHANNEL_V2                                                  ",.class_support_number = 0x60},
-{.command_class_suport =  " MULTI_CHANNEL_V3                                                  ",.class_support_number = 0x60},
 {.command_class_suport =  " MULTI_CMD                                                         ",.class_support_number = 0x8F},
 {.command_class_suport =  " MULTI_INSTANCE_ASSOCIATION                                        ",.class_support_number = 0x8E}, /*Discontinued*/
 {.command_class_suport =  " MULTI_INSTANCE                                                    ",.class_support_number = 0x60}, /*Discontinued*/
@@ -383,7 +368,6 @@ Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
 {.command_class_suport =  " PREPAYMENT                                                        ",.class_support_number = 0x3F},
 {.command_class_suport =  " PROPRIETARY                                                       ",.class_support_number = 0x88},
 {.command_class_suport =  " PROTECTION                                                        ",.class_support_number = 0x75},
-{.command_class_suport =  " PROTECTION_V2                                                     ",.class_support_number = 0x75},
 {.command_class_suport =  " RATE_TBL_CONFIG                                                   ",.class_support_number = 0x48},
 {.command_class_suport =  " RATE_TBL_MONITOR                                                  ",.class_support_number = 0x49},
 {.command_class_suport =  " REMOTE_ASSOCIATION_ACTIVATE                                       ",.class_support_number = 0x7C},
@@ -392,8 +376,6 @@ Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
 {.command_class_suport =  " SCENE_ACTUATOR_CONF                                               ",.class_support_number = 0x2C},
 {.command_class_suport =  " SCENE_CONTROLLER_CONF                                             ",.class_support_number = 0x2D},
 {.command_class_suport =  " SCHEDULE_ENTRY_LOCK                                               ",.class_support_number = 0x4E},
-{.command_class_suport =  " SCHEDULE_ENTRY_LOCK_V2                                            ",.class_support_number = 0x4E},
-{.command_class_suport =  " SCHEDULE_ENTRY_LOCK_V3                                            ",.class_support_number = 0x4E},
 {.command_class_suport =  " SCREEN_ATTRIBUTES                                                 ",.class_support_number = 0x93},
 {.command_class_suport =  " SCREEN_ATTRIBUTES_V2                                              ",.class_support_number = 0x93},
 {.command_class_suport =  " SCREEN_MD                                                         ",.class_support_number = 0x92},
@@ -404,56 +386,34 @@ Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
 {.command_class_suport =  " SECURITY                                                          ",.class_support_number = 0x98},
 {.command_class_suport =  " SENSOR_ALARM                                                      ",.class_support_number = 0x9C}, /*SDS10963-4 The Sensor Alarm {.command_class_suport = "COMMAND class can be used to realize Sensor Alarms.*/
 {.command_class_suport =  " SENSOR_BINARY                                                     ",.class_support_number = 0x30},
-//{.command_class_suport =  " SENSOR_BINARY_V2                                                  ",.class_support_number = 0x30},
 {.command_class_suport =  " SENSOR_CONFIGURATION                                              ",.class_support_number = 0x9E}, /*This {.command_class_suport = "COMMAND class adds the possibility for sensors to act on either a measured value or on a*/
 {.command_class_suport =  " SENSOR_MULTILEVEL                                                 ",.class_support_number = 0x31},
-//{.command_class_suport =  " SENSOR_MULTILEVEL_V2                                              ",.class_support_number = 0x31},
-//{.command_class_suport =  " SENSOR_MULTILEVEL_V3                                              ",.class_support_number = 0x31},
-//{.command_class_suport =  " SENSOR_MULTILEVEL_V4                                              ",.class_support_number = 0x31},
-//{.command_class_suport =  " SENSOR_MULTILEVEL_V5                                              ",.class_support_number = 0x31},
-//{.command_class_suport =  " SENSOR_MULTILEVEL_V6                                              ",.class_support_number = 0x31},
 {.command_class_suport =  " SILENCE_ALARM                                                     ",.class_support_number = 0x9D}, /*SDS10963-4 The Alarm Silence {.command_class_suport = "COMMAND class can be used to nuisance silence to temporarily disable the sounding*/
 {.command_class_suport =  " SIMPLE_AV_CONTROL                                                 ",.class_support_number = 0x94},
 {.command_class_suport =  " SWITCH_ALL                                                        ",.class_support_number = 0x27},
 {.command_class_suport =  " SWITCH_BINARY                                                     ",.class_support_number = 0x25},
 {.command_class_suport =  " SWITCH_MULTILEVEL                                                 ",.class_support_number = 0x26},
-{.command_class_suport =  " SWITCH_MULTILEVEL_V2                                              ",.class_support_number = 0x26},
-{.command_class_suport =  " SWITCH_MULTILEVEL_V3                                              ",.class_support_number = 0x26},
 {.command_class_suport =  " SWITCH_TOGGLE_BINARY                                              ",.class_support_number = 0x28},
 {.command_class_suport =  " SWITCH_TOGGLE_MULTILEVEL                                          ",.class_support_number = 0x29},
 {.command_class_suport =  " TARIFF_CONFIG                                                     ",.class_support_number = 0x4A},
 {.command_class_suport =  " TARIFF_TBL_MONITOR                                                ",.class_support_number = 0x4B},
 {.command_class_suport =  " THERMOSTAT_FAN_MODE                                               ",.class_support_number = 0x44},
-{.command_class_suport =  " THERMOSTAT_FAN_MODE_V2                                            ",.class_support_number = 0x44},
-{.command_class_suport =  " THERMOSTAT_FAN_MODE_V3                                            ",.class_support_number = 0x44},
-{.command_class_suport =  " THERMOSTAT_FAN_MODE_V4                                            ",.class_support_number = 0x44},
 {.command_class_suport =  " THERMOSTAT_FAN_STATE                                              ",.class_support_number = 0x45},
 {.command_class_suport =  " THERMOSTAT_HEATING                                                ",.class_support_number = 0x38},
 {.command_class_suport =  " THERMOSTAT_MODE                                                   ",.class_support_number = 0x40},
-{.command_class_suport =  " THERMOSTAT_MODE_V2                                                ",.class_support_number = 0x40},
-{.command_class_suport =  " THERMOSTAT_MODE_V3                                                ",.class_support_number = 0x40},
 {.command_class_suport =  " THERMOSTAT_OPERATING_STATE                                        ",.class_support_number = 0x42},
-{.command_class_suport =  " THERMOSTAT_OPERATING_STATE_V2                                     ",.class_support_number = 0x42},
 {.command_class_suport =  " THERMOSTAT_SETBACK                                                ",.class_support_number = 0x47},
 {.command_class_suport =  " THERMOSTAT_SETPOINT                                               ",.class_support_number = 0x43},
-//{.command_class_suport =  " THERMOSTAT_SETPOINT_V2                                            ",.class_support_number = 0x43},
-//{.command_class_suport =  " THERMOSTAT_SETPOINT_V3                                            ",.class_support_number = 0x43},
 {.command_class_suport =  " TIME_PARAMETERS                                                   ",.class_support_number = 0x8B},
 {.command_class_suport =  " TIME                                                              ",.class_support_number = 0x8A},
-//{.command_class_suport =  " TIME_V2                                                           ",.class_support_number = 0x8A},
 {.command_class_suport =  " TRANSPORT_SERVICE                                                 ",.class_support_number = 0x55},
-//{.command_class_suport =  " TRANSPORT_SERVICE_V2                                              ",.class_support_number = 0x55},
 {.command_class_suport =  " USER_CODE                                                         ",.class_support_number = 0x63},
 {.command_class_suport =  " VERSION                                                           ",.class_support_number = 0x86},
-//{.command_class_suport =  " VERSION_V2                                                        ",.class_support_number = 0x86},
 {.command_class_suport =  " WAKE_UP                                                           ",.class_support_number = 0x84},
-//{.command_class_suport =  " WAKE_UP_V2                                                        ",.class_support_number = 0x84},
 {.command_class_suport =  " ZIP_6LOWPAN                                                       ",.class_support_number = 0x4F},
 {.command_class_suport =  " ZIP                                                               ",.class_support_number = 0x23},
-{.command_class_suport =  " ZIP_V2                                                            ",.class_support_number = 0x23},
 {.command_class_suport =  " APPLICATION_CAPABILITY                                            ",.class_support_number = 0x57},
 {.command_class_suport =  " COLOR_CONTROL                                                     ",.class_support_number = 0x33},
-{.command_class_suport =  " COLOR_CONTROL_V2                                                  ",.class_support_number = 0x33},
 {.command_class_suport =  " SCHEDULE                                                          ",.class_support_number = 0x53},
 {.command_class_suport =  " NETWORK_MANAGEMENT_PRIMARY                                        ",.class_support_number = 0x54},
 {.command_class_suport =  " ZIP_ND                                                            ",.class_support_number = 0x58},
@@ -462,16 +422,12 @@ Manu_class_suport_t class_suport_t[manu_class_suport_max] = {
 {.command_class_suport =  " CENTRAL_SCENE                                                     ",.class_support_number = 0x5B},
 {.command_class_suport =  " IP_ASSOCIATION                                                    ",.class_support_number = 0x5C},
 {.command_class_suport =  " ANTITHEFT                                                         ",.class_support_number = 0x5D},
-{.command_class_suport =  " ANTITHEFT_V2                                                      ",.class_support_number = 0x5D},
 {.command_class_suport =  " ZWAVEPLUS_INFO                                                    ",.class_support_number = 0x5E}, /*SDS11907-3*/
-{.command_class_suport =  " ZWAVEPLUS_INFO_V2                                                 ",.class_support_number = 0x5E}, /*SDS11907-3*/
 {.command_class_suport =  " ZIP_GATEWAY                                                       ",.class_support_number = 0x5F},
 {.command_class_suport =  " ZIP_PORTAL                                                        ",.class_support_number = 0x61},
 {.command_class_suport =  " APPLIANCE                                                         ",.class_support_number = 0x64},
 {.command_class_suport =  " DMX                                                               ",.class_support_number = 0x65},
 {.command_class_suport =  " BARRIER_OPERATOR                                                  ",.class_support_number = 0x66},
-
-
 };
 
 Manufacture_id_value_t manu_id[manu_pID_max] = {
@@ -978,7 +934,7 @@ int main(int argc, char *argv[])
                     for (i=0;i<pzwParam->node.node_capability.noCapability;i++)
                     {
                        // printf(":%02X",pzwParam->node.node_capability.aCapability[i]);
-                        for(command_class_count = 0;command_class_count<manu_max;command_class_count++)
+                        for(command_class_count = 0;command_class_count<manu_class_suport_max;command_class_count++)
                         {
                             if(pzwParam->node.node_capability.aCapability[i] == class_suport_t[command_class_count].class_support_number)
                             {
@@ -1742,7 +1698,7 @@ int main(int argc, char *argv[])
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x32) 
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x71) 
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x80)
-                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x84)
+                                   // || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x84)
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x85) )
                                 {
                                         printf("\t%d.\t%s\n",count_feature_enum,feature_option[count1].feature_class[feature_option_count].command_class_suport);
@@ -1753,40 +1709,40 @@ int main(int argc, char *argv[])
                         }
                     }
                     printf("\n %d",count_feature_enum);
-                  //  do
-                  //  {
+                    do
+                    {
                         printf("Please choose your feature. \n");
                       // printf("1 .Battery Get Feature \n2 .Wake Up Feature \n3 .Association \n4 .Sensor Multilevel Feature \n5 .Metter Feature \n0. Exit \n");
                          for(feature_option_count =0;feature_option_count<=count_feature_enum;feature_option_count++)
                               { 
                                 if(feature_class_support_number[feature_option_count] == 0x80)
                                     {
-                                        printf(" -Battery Get  \n");
+                                        printf(" '1' - Battery Get  \n");
                                         count2++;
                                     }
                                 else if(feature_class_support_number[feature_option_count] == 0x84)
                                     {
-                                        printf(" -Wake Up  \n");
+                                        printf(" '2' - Alarm   \n");
                                         count2++;
                                     }
                                 else if(feature_class_support_number[feature_option_count] == 0x85)
                                     {
-                                        printf(" -Association  \n");
+                                        printf(" '3' - Association  \n");
                                         count2++;
                                     }
                                 else if(feature_class_support_number[feature_option_count] == 0x31)
                                     {
-                                        printf(" -Sensor Multilevel  \n");
+                                        printf(" '4' - Sensor Multilevel  \n");
                                         count2++;
                                     }
                                 else if(feature_class_support_number[feature_option_count] == 0x32)
                                     {
-                                        printf(" -Metter  \n");
+                                        printf(" '5' - Metter  \n");
                                         count2++;
                                     }
-                              }   
-                              do
-                                 {
+                              }   printf(" '0' - exit \n");
+                          //    do
+                            //     {
                                     
                         scanf("%d",&choise_feature);
                         switch(choise_feature)
@@ -1808,7 +1764,7 @@ int main(int argc, char *argv[])
                             break;
                             }
                             case 2:
-                            printf("Wake Up Feature. \n");
+                            printf("Alarm Feature. \n");
                             break;
                             case 3:
                             {
