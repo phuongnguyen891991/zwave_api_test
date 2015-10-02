@@ -1698,7 +1698,7 @@ int main(int argc, char *argv[])
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x32) 
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x71) 
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x80)
-                                   // || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x84)
+                                    || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x70)
                                     || (feature_option[count1].feature_class[feature_option_count].class_support_number == 0x85) )
                                 {
                                         printf("\t%d.\t%s\n",count_feature_enum,feature_option[count1].feature_class[feature_option_count].command_class_suport);
@@ -1735,16 +1735,21 @@ int main(int argc, char *argv[])
                                         printf(" '4' - Sensor Multilevel  \n");
                                         count2++;
                                     }
+                                else if(feature_class_support_number[feature_option_count] == 0x70)
+                                    {
+                                        printf(" '5' - Configuration  \n");
+                                        count2++;
+                                    }
                                 else if(feature_class_support_number[feature_option_count] == 0x32)
                                     {
-                                        printf(" '5' - Metter  \n");
+                                        printf(" '6' - Metter  \n");
                                         count2++;
                                     }
                               }   printf(" '0' - exit \n");
                           //    do
                             //     {
                                     
-                        scanf("%d",&choise_feature);
+                        if(scanf("%d",&choise_feature) == 1)
                         switch(choise_feature)
                         {
                             case 1:
@@ -1752,6 +1757,7 @@ int main(int argc, char *argv[])
                                 printf("Battery Get Feature. \n");
                                 pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
                                 pzwParam->param2=NodeID;
+                                pzwParam->param3=0x01;
                                 pzwParam->cmd_set.cmd[0]=COMMAND_CLASS_BATTERY;
                                 pzwParam->cmd_set.cmd[1]=BATTERY_GET;
                                 pzwParam->cmd_set.cmd_length=2;
@@ -1771,7 +1777,7 @@ int main(int argc, char *argv[])
                                     printf("Association. \n");
                                     int choise_association;
                                     printf("1. add group \t2. remove group \n");
-                                    scanf("%d",&choise_association);
+                                    if(scanf("%d",&choise_association)==1)
                                     switch(choise_association)
                                     {
                                         case 1:
@@ -1790,7 +1796,7 @@ int main(int argc, char *argv[])
                                                 zwaveSendCommand(pzwParam);
                                                 if (pzwParam->ret==0)
                                                 {
-                                                    mainlog(logUI,"TEST: Node[%02X] and Node[%02X] Alarm water group ID:%03x! ",NodeID,NodeID_ad,GroupID);
+                                                    mainlog(logUI,"TEST: Node[%02X] and Node[%02X] Alarm  group ID:%03x! ",NodeID,NodeID_ad,GroupID);
                                                 }
                                             }
                                             break;
@@ -1811,7 +1817,7 @@ int main(int argc, char *argv[])
                                                 zwaveSendCommand(pzwParam);
                                                 if (pzwParam->ret==0)
                                                 {
-                                                    mainlog(logUI,"TEST: Node[%02X] and Node[%02X] Alarm water group ID:%03x! ",NodeID,NodeID_ad,GroupID);
+                                                    mainlog(logUI,"TEST:Remove Node[%02X] and Node[%02X] Alarm group ID:%03x! ",NodeID,NodeID_ad,GroupID);
                                                 }
                                             }
                                             break;
@@ -1849,6 +1855,7 @@ int main(int argc, char *argv[])
                                         }
                                         pzwParam->command=COMMAND_CLASS_SPECIFIC_GET_SPECIFICAION_DATA;
                                         pzwParam->param2=NodeID;
+                                        pzwParam->param3=0x01;
                                         pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_SENSOR_MULTILEVEL;
                                         pzwParam->cmd_set.cmd[1]= SENSOR_MULTILEVEL_GET;
                                         pzwParam->cmd_set.cmd[2]= (uint8_t)SensorType;
@@ -1927,13 +1934,45 @@ int main(int argc, char *argv[])
                                                     printf("ULTRAVIOLET: \n");
                                                     printf("\t ultraviolet value (UV) : %2d \n",pzwParam->data_out.cmd[4]);
                                                     break ;
-                                                }    
+                                                }
+                                                case 5:
+                                                    break;    
                                             }
                                         }
                                     }
                                 break;    
                             }
                             case 5:
+                            {
+                            printf("Configuration Feature. \n");
+                            printf("Please enter time(>= 10s) to set : ");
+                            int time_configuration;
+                            if(scanf("%X",&time_configuration) == 1)
+                                if(time_configuration >= 0x0a)
+                                {
+                                    pzwParam->command=COMMAND_CLASS_SPECIFIC_SET_SPECIFICAION_DATA;
+                                    pzwParam->param2=NodeID;
+                                    //pzwParam->param3=0x01;
+                                    pzwParam->cmd_set.cmd[0]= COMMAND_CLASS_CONFIGURATION;
+                                    pzwParam->cmd_set.cmd[1]= CONFIGURATION_SET;
+                                    pzwParam->cmd_set.cmd[2]= 0x03;
+                                    pzwParam->cmd_set.cmd[3]= 0x02;//(1<<3); 
+                                    pzwParam->cmd_set.cmd[4]= 0x00;
+                                    pzwParam->cmd_set.cmd[5] = time_configuration;
+                                    pzwParam->cmd_set.cmd_length=6;
+                                    zwaveSendCommand(pzwParam);
+                                    if (pzwParam->ret==0) 
+                                    {
+                                        printf("Set times successful ! \n");
+                                    }
+                                }
+                                else
+                                {
+                                    printf("invalid value. \n");
+                                }
+                                break;
+                            }
+                            case 6:
                             {
                             printf("Metter Feature. \n");
                             printf("1. Electric Meter \n2. Gas Meter \n3. Water Meter \n");
@@ -1984,7 +2023,8 @@ int main(int argc, char *argv[])
                             
                         }
                         printf("1.continue \t0.stop and exit\n");
-                        scanf("%d",&check);
+                        if(scanf("%d",&check)==1)
+                        {}
                     }while(check != 0);
 
                 }
